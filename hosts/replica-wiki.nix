@@ -76,11 +76,11 @@ in
   systemd.services.mediawiki-db-setup = {
     description = "Create MediaWiki database user on replica";
     after = [
-      "agenix.service"
+      "run-agenix.d.mount"
       "mysql.service"
     ];
     requires = [
-      "agenix.service"
+      "run-agenix.d.mount"
       "mysql.service"
       "network-online.target"
     ];
@@ -105,11 +105,11 @@ in
   systemd.services.mysql-replication-replica = {
     description = "Configure MariaDB replica replication";
     after = [
-      "agenix.service"
+      "run-agenix.d.mount"
       "mysql.service"
     ];
     requires = [
-      "agenix.service"
+      "run-agenix.d.mount"
       "mysql.service"
     ];
     before = [ "mediawiki-init.service" ];

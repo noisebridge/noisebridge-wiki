@@ -82,11 +82,11 @@ in
   systemd.services.mediawiki-db-setup = {
     description = "Create MediaWiki database user";
     after = [
-      "agenix.service"
+      "run-agenix.d.mount"
       "mysql.service"
     ];
     requires = [
-      "agenix.service"
+      "run-agenix.d.mount"
       "mysql.service"
     ];
     before = [ "mediawiki-init.service" ];
@@ -112,11 +112,11 @@ in
   systemd.services.mysql-replication-primary = {
     description = "Create MariaDB replication user";
     after = [
-      "agenix.service"
+      "run-agenix.d.mount"
       "mysql.service"
     ];
     requires = [
-      "agenix.service"
+      "run-agenix.d.mount"
       "mysql.service"
     ];
     wantedBy = [ "multi-user.target" ];
