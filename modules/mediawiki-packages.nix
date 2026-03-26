@@ -12,7 +12,7 @@ in
     AdminLinks = fetchRelExtension "AdminLinks" "sha256-CBIxASBVcdQgL6Iw6OtIxWRi0tfdojajNqY3U4w3b+o=";
     BetaFeatures = fetchRelExtension "BetaFeatures" "sha256-N/xiTlrzOb8mtt7mgtQ9iwrLJu8ddt8JwN+99EGfwXI=";
     CategoryTree = fetchRelExtension "CategoryTree" "sha256-y4zCt0vNrbN2nNvDvXjHFQ6BH/P2nSTHKCwY1bWil2A=";
-    CharInsert = fetchRelExtension "CharInsert" "sha256-oJMJQSK3fwew5wXLlRDg0Ry3BFAKNhqMFc4+OMWGOd0=";
+    CharInsert = fetchRelExtension "CharInsert" "sha256-KlSh5ZYnF4IqGClA/1Oj2PAoUM4PAFh0U1yUHSPS18Y=";
     CheckUser = fetchRelExtension "CheckUser" "sha256-b/3TZdRIEg7jwWynNHjluRyS0rwdtbY1ahZLALq4tWc=";
     ConfirmAccount = fetchRelExtension "ConfirmAccount" "sha256-8sXziggkquQdvXuUD/asbhVQglLiFzuYCVe9FePR9NY=";
     ConfirmEdit = fetchRelExtension "ConfirmEdit" "sha256-GQb5qe/T0gmFZJ55dKQKYZUoKlk+Iak8pr8kDOpUeHk=";
