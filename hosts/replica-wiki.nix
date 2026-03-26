@@ -295,6 +295,8 @@ in
     '';
   };
 
+  services.phpfpm.pools.mediawiki.settings.listen = "127.0.0.1:9000";
+
   services.caddy = {
     enable = true;
     virtualHosts.${wikiDomain}.extraConfig = ''
@@ -317,7 +319,7 @@ in
       @wikiPage path_regexp wikiPage ^/wiki/(.+)$
       rewrite @wikiPage /index.php?title={re.wikiPage.1}
 
-      php_fastcgi unix/${config.services.phpfpm.pools.mediawiki.socket}
+      php_fastcgi 127.0.0.1:9000
       file_server {
         hide *.php
       }
