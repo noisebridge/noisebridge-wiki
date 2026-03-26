@@ -120,7 +120,7 @@
       deploy.nodes = {
         main-wiki = {
           hostname = primaryMeta.publicIpv4;
-          remoteBuild = true;
+          remoteBuild = false;
           sshUser = siteConfig.sshUser;
           profiles.system = {
             user = "root";
@@ -130,7 +130,7 @@
 
         replica-wiki = {
           hostname = replicaMeta.publicIpv4;
-          remoteBuild = true;
+          remoteBuild = false;
           sshUser = siteConfig.sshUser;
           profiles.system = {
             user = "root";
