@@ -324,6 +324,8 @@ in
     '';
   };
 
+  users.users.caddy.extraGroups = [ "mediawiki" ];
+
   systemd.tmpfiles.rules = [
     "d /srv/mediawiki 0755 root root -"
     "d ${siteConfig.mediawiki.uploadsDir} 0750 mediawiki mediawiki -"
