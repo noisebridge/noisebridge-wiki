@@ -100,6 +100,8 @@ in
     '';
   };
 
+  systemd.services.mediawiki-init.wantedBy = lib.mkForce [ ];
+
   systemd.services.mysql-replication-replica = {
     description = "Configure MariaDB replica replication";
     after = [

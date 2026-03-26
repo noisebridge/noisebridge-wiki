@@ -104,6 +104,11 @@ in
     '';
   };
 
+  systemd.services.mediawiki-init = {
+    requires = [ "mediawiki-db-setup.service" ];
+    after = [ "mediawiki-db-setup.service" ];
+  };
+
   systemd.services.mysql-replication-primary = {
     description = "Create MariaDB replication user";
     after = [
