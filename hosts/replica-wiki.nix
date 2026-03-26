@@ -9,6 +9,15 @@
 let
   wikiDomain = hostMeta.publicDomain;
   mediawikiPackages = import ../modules/mediawiki-packages.nix { inherit pkgs; };
+  enabledExtensions = lib.getAttrs [
+    "CategoryTree"
+    "ConfirmEdit"
+    "Gadgets"
+    "ImageMap"
+    "Interwiki"
+    "ParserFunctions"
+    "Scribunto"
+  ] mediawikiPackages.extensions;
   mediawikiDbPassword = config.age.secrets.mysql-mediawiki.path;
   mediawikiReplicationPassword = config.age.secrets.mysql-replication.path;
   mediawikiAdminPassword = config.age.secrets.mediawiki-admin-password.path;
@@ -180,7 +189,7 @@ in
     skins = lib.mkForce {
       Vector = mediawikiPackages.skins.Vector;
     };
-    extensions = mediawikiPackages.extensions;
+    extensions = enabledExtensions;
     extraConfig = ''
       $wgScriptPath = "${siteConfig.mediawiki.scriptPath}";
       $wgArticlePath = "${siteConfig.mediawiki.articlePath}";
@@ -231,7 +240,6 @@ in
       $wgRateLimitsExcludedIPs = [ '192.195.83.128/29' ];
       $wgGroupPermissions['user']['noratelimit'] = true;
       $wgCaptchaClass = 'QuestyCaptcha';
-      $ceAllowConfirmedEmail = true;
       $wgCaptchaTriggers['edit'] = true;
       $wgCaptchaTriggers['create'] = true;
       $wgCaptchaTriggers['addurl'] = true;
@@ -263,23 +271,13 @@ in
       ];
       $wgFileExtensions[] = 'pdf';
       $wgFileExtensions[] = 'svg';
-      $wgGroupPermissions['sysop']['checkuser'] = true;
-      $wgGroupPermissions['sysop']['checkuser-log'] = true;
-      $wgGroupPermissions['sysop']['investigate'] = true;
-      $wgGroupPermissions['sysop']['checkuser-temporary-account'] = true;
       $wgGroupPermissions['interface-admin']['gadgets-edit'] = true;
       $wgGroupPermissions['interface-admin']['gadgets-definition-edit'] = true;
-      $wgPopupsVirtualPageViews = true;
-      $wgPopupsReferencePreviewsBetaFeature = false;
-      $wgPopupsOptInDefaultState = 1;
       $wgGroupPermissions['*']['createaccount'] = false;
       $wgGroupPermissions['bureaucrat']['createaccount'] = true;
       $wgAllowUserJs = true;
       $wgAllowUserCss = true;
       $wgGroupPermissions['sysop']['interwiki'] = true;
-      $wgGroupPermissions['bureaucrat']['invitesignup'] = true;
-      $wgGroupPermissions['invitesignup']['invitesignup'] = true;
-      $wgISGroupsRequired = [ 'invitedIS' ];
       $wgScribuntoDefaultEngine = 'luasandbox';
       $wgForeignFileRepos[] = [
         'class' => ForeignAPIRepo::class,
