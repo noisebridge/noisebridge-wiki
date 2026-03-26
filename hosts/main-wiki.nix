@@ -9,15 +9,6 @@
 let
   wikiDomain = hostMeta.publicDomain;
   mediawikiPackages = import ../modules/mediawiki-packages.nix { inherit pkgs; };
-  enabledExtensions = lib.getAttrs [
-    "CategoryTree"
-    "ConfirmEdit"
-    "Gadgets"
-    "ImageMap"
-    "Interwiki"
-    "ParserFunctions"
-    "Scribunto"
-  ] mediawikiPackages.extensions;
   mediawikiDbPassword = config.age.secrets.mysql-mediawiki.path;
   mediawikiReplicationPassword = config.age.secrets.mysql-replication.path;
   mediawikiAdminPassword = config.age.secrets.mediawiki-admin-password.path;
@@ -68,8 +59,6 @@ in
     iptables -D nixos-fw -p tcp -s ${siteConfig.hosts.replica.publicIpv4} --dport 3306 -j nixos-fw-accept || true
   '';
 
-  services.memcached.enable = true;
-
   services.mysql = {
     enable = true;
     package = pkgs.mariadb;
@@ -104,7 +93,7 @@ in
     script = ''
       password="$(tr -d '\n' < ${mediawikiDbPassword})"
 
-      ${pkgs.mariadb}/bin/mysql --protocol=socket -uroot <<SQL
+      ${pkgs.mariadb}/bin/mariadb --protocol=socket -uroot <<SQL
       CREATE USER IF NOT EXISTS '${siteConfig.database.mediawikiUser}'@'localhost' IDENTIFIED BY '${"$"}password';
       ALTER USER '${siteConfig.database.mediawikiUser}'@'localhost' IDENTIFIED BY '${"$"}password';
       GRANT ALL PRIVILEGES ON ${siteConfig.database.name}.* TO '${siteConfig.database.mediawikiUser}'@'localhost';
@@ -133,7 +122,7 @@ in
     script = ''
       password="$(tr -d '\n' < ${mediawikiReplicationPassword})"
 
-      ${pkgs.mariadb}/bin/mysql --protocol=socket -uroot <<SQL
+      ${pkgs.mariadb}/bin/mariadb --protocol=socket -uroot <<SQL
       CREATE USER IF NOT EXISTS '${siteConfig.database.replicationUser}'@'${siteConfig.hosts.replica.publicIpv4}' IDENTIFIED BY '${"$"}password';
       ALTER USER '${siteConfig.database.replicationUser}'@'${siteConfig.hosts.replica.publicIpv4}' IDENTIFIED BY '${"$"}password';
       GRANT REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO '${siteConfig.database.replicationUser}'@'${siteConfig.hosts.replica.publicIpv4}';
@@ -150,16 +139,6 @@ in
     passwordFile = mediawikiAdminPassword;
     passwordSender = siteConfig.mediawiki.passwordSender;
     uploadsDir = siteConfig.mediawiki.uploadsDir;
-    phpPackage = pkgs.php83.buildEnv {
-      extensions =
-        { enabled, all }:
-        enabled
-        ++ (with all; [
-          apcu
-          luasandbox
-          memcached
-        ]);
-    };
     database = {
       type = "mysql";
       createLocally = false;
@@ -169,114 +148,20 @@ in
       user = siteConfig.database.mediawikiUser;
       passwordFile = mediawikiDbPassword;
     };
-    path = with pkgs; [
-      imagemagick
-      ffmpeg
-      diffutils
-    ];
     skins = lib.mkForce {
       Vector = mediawikiPackages.skins.Vector;
     };
-    extensions = enabledExtensions;
     extraConfig = ''
       $wgScriptPath = "${siteConfig.mediawiki.scriptPath}";
       $wgArticlePath = "${siteConfig.mediawiki.articlePath}";
       $wgUsePathInfo = true;
       $wgEmergencyContact = "${siteConfig.mediawiki.emergencyContact}";
       $wgPasswordSender = "${siteConfig.mediawiki.passwordSender}";
-      $wgEnotifUserTalk = true;
-      $wgEnotifWatchlist = true;
-      $wgDBprefix = "${siteConfig.database.tablePrefix}";
-      $wgMainCacheType = CACHE_MEMCACHED;
-      $wgMessageCacheType = CACHE_MEMCACHED;
-      $wgParserCacheType = CACHE_MEMCACHED;
-      $wgMemCachedServers = [ "127.0.0.1:11211" ];
-      $wgEnableSidebarCache = true;
-      $wgSessionsInObjectCache = true;
-      $wgSessionCacheType = CACHE_MEMCACHED;
-      $wgEnableUploads = true;
-      $wgUploadDirectory = "${siteConfig.mediawiki.uploadsDir}";
-      $wgUploadPath = "${siteConfig.mediawiki.uploadPath}";
-      $wgUseImageMagick = true;
-      $wgUseImageResize = true;
-      $wgImageMagickConvertCommand = "${pkgs.imagemagick}/bin/convert";
-      $wgUseInstantCommons = true;
-      $wgShellLocale = "en_US.utf8";
       $wgLanguageCode = "en";
-      $wgLocaltimezone = "US/Pacific";
-      date_default_timezone_set( $wgLocaltimezone );
       $wgSecretKey = trim( file_get_contents( "${mediawikiSecretKey}" ) );
-      $wgAuthenticationTokenVersion = "1";
       $wgUpgradeKey = trim( file_get_contents( "${mediawikiUpgradeKey}" ) );
-      $wgRightsUrl = "https://creativecommons.org/licenses/by-nc-sa/4.0/";
-      $wgRightsText = "Creative Commons Attribution-NonCommercial-ShareAlike";
-      $wgRightsIcon = "$wgResourceBasePath/resources/assets/licenses/cc-by-nc-sa.png";
-      $wgDiff3 = "${pkgs.diffutils}/bin/diff3";
+      $wgEnableUploads = false;
       $wgDefaultSkin = "vector-2022";
-      $wgVectorDefaultSkinVersionForExistingAccounts = "2";
-      $wgVectorDefaultSkinVersionForNewAccounts = "2";
-      $wgVectorShowSkinPreferences = true;
-      $wgUseGzip = true;
-      $wgUseFileCache = true;
-      $wgFileCacheDirectory = "${siteConfig.mediawiki.fileCacheDir}";
-      $wgShowIPinHeader = false;
-      $wgCdnMaxAge = 7200;
-      $wgCaptchaQuestions = [
-        'What is the guiding principle of Noisebridge?' => [ 'be excellent' ],
-      ];
-      $wgCaptchaWhitelistIP = [ '192.195.83.130' ];
-      $wgRateLimitsExcludedIPs = [ '192.195.83.128/29' ];
-      $wgGroupPermissions['user']['noratelimit'] = true;
-      $wgCaptchaClass = 'QuestyCaptcha';
-      $wgCaptchaTriggers['edit'] = true;
-      $wgCaptchaTriggers['create'] = true;
-      $wgCaptchaTriggers['addurl'] = true;
-      $wgCaptchaTriggers['createaccount'] = true;
-      $wgCaptchaTriggers['badlogin'] = true;
-      $wgGroupPermissions['*']['createpage'] = false;
-      $wgGroupPermissions['user']['createpage'] = false;
-      $wgGroupPermissions['*']['createtalk'] = false;
-      $wgGroupPermissions['user']['createtalk'] = false;
-      $wgGroupPermissions['autoconfirmed']['createpage'] = true;
-      $wgGroupPermissions['autoconfirmed']['createtalk'] = true;
-      $wgGroupPermissions['*']['move'] = false;
-      $wgGroupPermissions['user']['move'] = false;
-      $wgGroupPermissions['autoconfirmed']['move'] = true;
-      $wgGroupPermissions['*']['upload'] = false;
-      $wgGroupPermissions['user']['upload'] = false;
-      $wgGroupPermissions['autoconfirmed']['upload'] = true;
-      $wgGroupPermissions['*']['skipcaptcha'] = false;
-      $wgGroupPermissions['user']['skipcaptcha'] = false;
-      $wgGroupPermissions['autoconfirmed']['skipcaptcha'] = true;
-      $wgGroupPermissions['emailconfirmed']['skipcaptcha'] = true;
-      $wgGroupPermissions['bot']['skipcaptcha'] = true;
-      $wgGroupPermissions['sysop']['skipcaptcha'] = true;
-      $wgGroupPermissions['confirmed'] = $wgGroupPermissions['autoconfirmed'];
-      $wgAutoConfirmCount = 5;
-      $wgAutoConfirmAge = 86400 * 3;
-      $wgAutopromote = [
-        "autoconfirmed" => [ "&", [ APCOND_EDITCOUNT, &$wgAutoConfirmCount ], [ APCOND_AGE, &$wgAutoConfirmAge ], APCOND_EMAILCONFIRMED ],
-      ];
-      $wgFileExtensions[] = 'pdf';
-      $wgFileExtensions[] = 'svg';
-      $wgGroupPermissions['interface-admin']['gadgets-edit'] = true;
-      $wgGroupPermissions['interface-admin']['gadgets-definition-edit'] = true;
-      $wgGroupPermissions['*']['createaccount'] = false;
-      $wgGroupPermissions['bureaucrat']['createaccount'] = true;
-      $wgAllowUserJs = true;
-      $wgAllowUserCss = true;
-      $wgGroupPermissions['sysop']['interwiki'] = true;
-      $wgScribuntoDefaultEngine = 'luasandbox';
-      $wgForeignFileRepos[] = [
-        'class' => ForeignAPIRepo::class,
-        'name' => 'commonswiki',
-        'apibase' => 'https://commons.wikimedia.org/w/api.php',
-        'hashLevels' => 2,
-        'fetchDescription' => true,
-        'descriptionCacheExpiry' => 43200,
-        'apiThumbCacheExpiry' => 86400,
-      ];
-      $wgGroupPermissions['user']['writeapi'] = true;
     '';
   };
 
@@ -287,14 +172,6 @@ in
     virtualHosts.${wikiDomain}.extraConfig = ''
       encode zstd gzip
       root * ${config.services.mediawiki.finalPackage}/share/mediawiki
-
-      @deleted path /images/deleted*
-      respond @deleted 403
-
-      handle /images/* {
-        root * ${siteConfig.mediawiki.uploadsDir}
-        file_server
-      }
 
       redir / /wiki 308
 
@@ -311,11 +188,8 @@ in
     '';
   };
 
-  users.users.caddy.extraGroups = [ "mediawiki" ];
-
   systemd.tmpfiles.rules = [
     "d /srv/mediawiki 0755 root root -"
     "d ${siteConfig.mediawiki.uploadsDir} 0750 mediawiki mediawiki -"
-    "d ${siteConfig.mediawiki.fileCacheDir} 0750 mediawiki mediawiki -"
   ];
 }
