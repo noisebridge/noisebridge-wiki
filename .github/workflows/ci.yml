@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: DeterminateSystems/nix-installer-action@main
+
+      - name: nix flake check
+        run: nix flake check --print-build-logs
+
+      - name: Build primary host
+        run: nix build .#nixosConfigurations.main-wiki.config.system.build.toplevel --print-build-logs
+
+      - name: Build replica host
+        run: nix build .#nixosConfigurations.replica-wiki.config.system.build.toplevel --print-build-logs
+
+  deploy:
+    needs: check
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    concurrency:
+      group: deploy
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: DeterminateSystems/nix-installer-action@main
+
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -t ed25519 "$(nix eval --raw .#deploy.nodes.\"main-wiki\".hostname)" >> ~/.ssh/known_hosts 2>/dev/null
+          ssh-keyscan -t ed25519 "$(nix eval --raw .#deploy.nodes.\"replica-wiki\".hostname)" >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Deploy all hosts
+        run: nix run .#deploy
