@@ -122,14 +122,19 @@ run_bootstrap() {
   local module_file
   local remote_target
   local try
-  local ssh_cmd=(ssh -o StrictHostKeyChecking=accept-new)
-  local scp_cmd=(scp -o StrictHostKeyChecking=accept-new)
+  local known_hosts_file
+  local ssh_cmd
+  local scp_cmd
   local admin_target
 
   work_dir="$(mktemp -d)"
   module_file="$work_dir/host-bootstrap.nix"
+  known_hosts_file="$work_dir/known_hosts"
   remote_target="$target_host:/etc/nixos/host-bootstrap.nix"
   admin_target="${bootstrap_admin}@${target_host#*@}"
+
+  ssh_cmd=(ssh -o StrictHostKeyChecking=accept-new -o UserKnownHostsFile="$known_hosts_file" -o GlobalKnownHostsFile=/dev/null)
+  scp_cmd=(scp -o StrictHostKeyChecking=accept-new -o UserKnownHostsFile="$known_hosts_file" -o GlobalKnownHostsFile=/dev/null)
 
   make_host_module "$module_file" "$bootstrap_admin"
 
