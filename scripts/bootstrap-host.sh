@@ -102,6 +102,7 @@ make_host_module() {
   users.users.${admin_name} = {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
+    linger = true;
     openssh.authorizedKeys.keys = [
 $(admin_keys "$admin_name")
     ];
