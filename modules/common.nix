@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ pkgs, ... }:
 {
   age.identityPaths = [ "/var/lib/agenix/host.age" ];
 
@@ -33,10 +33,6 @@
   services.journald.storage = "persistent";
 
   services.timesyncd.enable = true;
-
-  security.pam.services.systemd-user.startSession = lib.mkForce false;
-
-  systemd.services."user@".serviceConfig.Environment = [ "XDG_RUNTIME_DIR=/run/user/%i" ];
 
   systemd.tmpfiles.rules = [
     "d /var/lib/agenix 0700 root root -"
