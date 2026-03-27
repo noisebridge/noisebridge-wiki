@@ -34,6 +34,8 @@
 
   services.timesyncd.enable = true;
 
+  security.pam.services.systemd-user.startSession = false;
+
   systemd.tmpfiles.rules = [
     "d /var/lib/agenix 0700 root root -"
     "z /var/lib/agenix/host.age 0400 root root -"
