@@ -50,6 +50,8 @@
           replica = "${replicaHostName}.${baseDomain}";
         };
 
+        deploySigningPublicKey = "noisebridge-wiki-deploy-1:j9CAnUOOkOxOdAhkNKqGQ7RtUaZeJA0tOHXqofruuWI=";
+
         mediawiki = {
           articlePath = "/wiki/$1";
           scriptPath = "";
@@ -145,6 +147,14 @@
         deploy = {
           type = "app";
           program = "${pkgs.writeShellScript "deploy-noisebridge" ''
+            deploy_signing_key="''${LOCAL_KEY:-''${NOISEBRIDGE_DEPLOY_SIGNING_KEY:-$HOME/.config/noisebridge-wiki/deploy-signing-key}}"
+            if [ ! -f "$deploy_signing_key" ]; then
+              printf 'Missing deploy signing key: %s\n' "$deploy_signing_key" >&2
+              printf 'Expected public key: %s\n' '${siteConfig.deploySigningPublicKey}' >&2
+              exit 1
+            fi
+            export LOCAL_KEY="$deploy_signing_key"
+
             if [ "$#" -eq 0 ] || [ "''${1#-}" != "$1" ]; then
               exec ${deploy-rs.packages.${system}.default}/bin/deploy \
                 --auto-rollback true \
@@ -168,10 +178,12 @@
               [
                 "@ADMIN_USERS_JSON@"
                 "@JQ@"
+                "@DEPLOY_SIGNING_PUBLIC_KEY@"
               ]
               [
                 (builtins.toJSON siteConfig.adminUsers)
                 "${pkgs.jq}/bin/jq"
+                siteConfig.deploySigningPublicKey
               ]
               (builtins.readFile ./scripts/bootstrap-host.sh)
           )}";

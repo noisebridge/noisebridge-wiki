@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, siteConfig, ... }:
 {
   age.identityPaths = [ "/var/lib/agenix/host.age" ];
 
@@ -16,6 +16,7 @@
       "root"
       "@wheel"
     ];
+    trusted-public-keys = [ siteConfig.deploySigningPublicKey ];
     auto-optimise-store = true;
     max-jobs = "auto";
     cores = 0;

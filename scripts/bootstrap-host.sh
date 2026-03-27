@@ -16,6 +16,7 @@ if [ ! -f "$repo_root/flake.nix" ]; then
 fi
 
 admin_users_json='@ADMIN_USERS_JSON@'
+deploy_signing_public_key='@DEPLOY_SIGNING_PUBLIC_KEY@'
 
 pinned_nix_install_url='https://releases.nixos.org/nix/nix-2.24.14/install'
 
@@ -75,6 +76,12 @@ make_host_module() {
   cat > "$module_file" <<MODULE
 { ... }:
 {
+  nix.settings = {
+    experimental-features = [ "nix-command" "flakes" ];
+    trusted-users = [ "root" "@wheel" ];
+    trusted-public-keys = [ "${deploy_signing_public_key}" ];
+  };
+
   services.journald.storage = "persistent";
 
   services.openssh = {
