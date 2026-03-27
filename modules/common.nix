@@ -34,6 +34,10 @@
 
   services.timesyncd.enable = true;
 
+  system.activationScripts.restart-logind.text = ''
+    systemctl restart systemd-logind.service || true
+  '';
+
   systemd.tmpfiles.rules = [
     "d /var/lib/agenix 0700 root root -"
     "z /var/lib/agenix/host.age 0400 root root -"
