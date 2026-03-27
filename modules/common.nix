@@ -34,6 +34,8 @@
 
   services.timesyncd.enable = true;
 
+  systemd.services."user@".serviceConfig.Environment = [ "XDG_RUNTIME_DIR=/run/user/%i" ];
+
   systemd.tmpfiles.rules = [
     "d /var/lib/agenix 0700 root root -"
     "z /var/lib/agenix/host.age 0400 root root -"
