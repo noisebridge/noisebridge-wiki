@@ -5,6 +5,7 @@
     {
       isNormalUser = true;
       extraGroups = [ "wheel" ];
+      linger = true;
     }
     // userCfg
   ) siteConfig.adminUsers;
