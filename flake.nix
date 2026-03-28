@@ -79,6 +79,7 @@
             "Interwiki"
             "InviteSignup"
             "MultimediaViewer"
+            "mwGoogleSheet"
             "Nuke"
             "PageImages"
             "ParserFunctions"
@@ -87,11 +88,9 @@
             "Renameuser"
             "Scribunto"
             "TextExtracts"
-          ];
-          deferredExtensions = [
-            "mwGoogleSheet"
             "VisualEditor"
           ];
+          deferredExtensions = [ ];
         };
 
         database = {

@@ -21,6 +21,10 @@ in
     Interwiki = fetchRelExtension "Interwiki" "sha256-Wk2DvBGigv2LIzOafUiIE5Cc62W+enIG3yVVczRKZyw=";
     InviteSignup = fetchRelExtension "InviteSignup" "sha256-ZTomHYQ/TGanb0/nsegXyYy2hYF+bMe1cLmmKevFJSw=";
     MultimediaViewer = fetchRelExtension "MultimediaViewer" "sha256-1zJbeHj8kbVpk/W04P8r1yQNcdal1h82l2orlswNRcA=";
+    mwGoogleSheet = pkgs.fetchzip {
+      url = "https://github.com/marcidy/mwGoogleSheet/archive/refs/heads/REL1_27.tar.gz";
+      hash = "sha256-B0URmW+MAxwXn6pIr4CnQBl+vLqt+81M1lGfMHx7TKs=";
+    };
     Nuke = fetchRelExtension "Nuke" "sha256-HXHhmDB+uZW7s0hs1j3YNwoMoXAjF27KRrnw3V8t5L4=";
     PageImages = fetchRelExtension "PageImages" "sha256-HKv4zj9yIDwIcJ+Y+YBMPK6IjaJ5lQj9R9qJg/h5DFk=";
     ParserFunctions = fetchRelExtension "ParserFunctions" "sha256-A5U3cjMN+Cem1irork4q9Y64XK9qFjxpD9btBT3mjPc=";

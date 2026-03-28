@@ -308,6 +308,7 @@ in
       $wgGroupPermissions['invitesignup']['invitesignup'] = true;
       $wgISGroupsRequired = [ 'invitedIS' ];
       $wgScribuntoDefaultEngine = 'luasandbox';
+      $wgGroupPermissions['user']['writeapi'] = true;
       $wgForeignFileRepos[] = [
         'class' => ForeignAPIRepo::class,
         'name' => 'commonswiki',
