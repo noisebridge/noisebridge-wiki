@@ -64,8 +64,8 @@
           readOnlyMessage = "This wiki replica is read-only.";
           allowedSkins = [
             "Vector"
-            "Modern"
           ];
+          deferredSkins = [ "Modern" ];
           enabledExtensions = [
             "AdminLinks"
             "BetaFeatures"

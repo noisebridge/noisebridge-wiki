@@ -197,8 +197,6 @@ in
     };
     extensions = enabledExtensions;
     extraConfig = ''
-      wfLoadSkin( 'Modern' );
-
       $wgScriptPath = "${siteConfig.mediawiki.scriptPath}";
       $wgArticlePath = "${siteConfig.mediawiki.articlePath}";
       $wgUsePathInfo = true;
@@ -249,12 +247,6 @@ in
       $wgDiff3 = "${pkgs.diffutils}/bin/diff3";
 
       $wgDefaultSkin = "vector";
-      $wgSkipSkins = [
-        'CologneBlue',
-        'MinervaNeue',
-        'MonoBook',
-        'Timeless'
-      ];
 
       $wgUseGzip = true;
       $wgUseFileCache = false;
