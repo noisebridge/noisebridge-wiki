@@ -184,6 +184,7 @@ in
       host = "127.0.0.1";
       port = 3306;
       name = siteConfig.database.name;
+      tablePrefix = siteConfig.database.tablePrefix;
       user = siteConfig.database.mediawikiUser;
       passwordFile = mediawikiDbPassword;
     };
