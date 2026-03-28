@@ -153,12 +153,21 @@
               printf 'Expected public key: %s\n' '${siteConfig.deploySigningPublicKey}' >&2
               exit 1
             fi
-            export LOCAL_KEY="$deploy_signing_key"
+
+            nix build .#checks.${system}.deploy-activate --accept-flake-config
+            nix build .#checks.${system}.deploy-schema --accept-flake-config
+
+            main_path=$(nix build '.#deploy.nodes.main-wiki.profiles.system.path' --accept-flake-config --print-out-paths)
+            ${pkgs.nix}/bin/nix store sign --recursive --key-file "$deploy_signing_key" "$main_path"
+
+            replica_path=$(nix build '.#deploy.nodes.replica-wiki.profiles.system.path' --accept-flake-config --print-out-paths)
+            ${pkgs.nix}/bin/nix store sign --recursive --key-file "$deploy_signing_key" "$replica_path"
 
             if [ "$#" -eq 0 ] || [ "''${1#-}" != "$1" ]; then
               exec ${deploy-rs.packages.${system}.default}/bin/deploy \
                 --auto-rollback true \
                 --magic-rollback true \
+                --skip-checks \
                 path:.# \
                 "$@"
             fi
@@ -166,6 +175,7 @@
             exec ${deploy-rs.packages.${system}.default}/bin/deploy \
               --auto-rollback true \
               --magic-rollback true \
+              --skip-checks \
               "$@"
           ''}";
           meta.description = "Deploy all Noisebridge wiki hosts by default";
