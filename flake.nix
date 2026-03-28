@@ -65,7 +65,6 @@
           allowedSkins = [
             "Vector"
           ];
-          deferredSkins = [ "Modern" ];
           enabledExtensions = [
             "AdminLinks"
             "BetaFeatures"

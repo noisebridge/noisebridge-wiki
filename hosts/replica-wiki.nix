@@ -247,6 +247,9 @@ in
       $wgDiff3 = "${pkgs.diffutils}/bin/diff3";
 
       $wgDefaultSkin = "vector";
+      $wgVectorDefaultSkinVersionForExistingAccounts = "1";
+      $wgVectorDefaultSkinVersionForNewAccounts = "1";
+      $wgVectorShowSkinPreferences = true;
 
       $wgUseGzip = true;
       $wgUseFileCache = false;
