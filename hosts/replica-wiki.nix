@@ -9,9 +9,12 @@
 let
   wikiDomain = hostMeta.publicDomain;
   mediawikiPackages = import ../modules/mediawiki-packages.nix { inherit pkgs; };
+  enabledExtensions = lib.getAttrs siteConfig.mediawiki.enabledExtensions mediawikiPackages.extensions;
   mediawikiDbPassword = config.age.secrets.mysql-mediawiki.path;
   mediawikiReplicationPassword = config.age.secrets.mysql-replication.path;
   mediawikiAdminPassword = config.age.secrets.mediawiki-admin-password.path;
+  mediawikiRecaptchaSecretKey = config.age.secrets.mediawiki-recaptcha-secret-key.path;
+  mediawikiRecaptchaSiteKey = config.age.secrets.mediawiki-recaptcha-site-key.path;
   mediawikiSecretKey = config.age.secrets.mediawiki-secret-key.path;
   mediawikiUpgradeKey = config.age.secrets.mediawiki-upgrade-key.path;
 in
@@ -36,6 +39,18 @@ in
     group = "mediawiki";
   };
 
+  age.secrets.mediawiki-recaptcha-secret-key = {
+    file = ../secrets/shared/mediawiki-recaptcha-secret-key.age;
+    owner = "mediawiki";
+    group = "mediawiki";
+  };
+
+  age.secrets.mediawiki-recaptcha-site-key = {
+    file = ../secrets/shared/mediawiki-recaptcha-site-key.age;
+    owner = "mediawiki";
+    group = "mediawiki";
+  };
+
   age.secrets.mediawiki-secret-key = {
     file = ../secrets/shared/mediawiki-secret-key.age;
     owner = "mediawiki";
@@ -52,6 +67,8 @@ in
     80
     443
   ];
+
+  services.memcached.enable = true;
 
   services.mysql = {
     enable = true;
@@ -151,6 +168,16 @@ in
     passwordFile = mediawikiAdminPassword;
     passwordSender = siteConfig.mediawiki.passwordSender;
     uploadsDir = siteConfig.mediawiki.uploadsDir;
+    phpPackage = pkgs.php83.buildEnv {
+      extensions =
+        { enabled, all }:
+        enabled
+        ++ (with all; [
+          apcu
+          luasandbox
+          memcached
+        ]);
+    };
     database = {
       type = "mysql";
       createLocally = false;
@@ -160,20 +187,153 @@ in
       user = siteConfig.database.mediawikiUser;
       passwordFile = mediawikiDbPassword;
     };
+    path = with pkgs; [
+      diffutils
+      ffmpeg
+      imagemagick
+    ];
     skins = lib.mkForce {
       Vector = mediawikiPackages.skins.Vector;
     };
+    extensions = enabledExtensions;
     extraConfig = ''
+      wfLoadSkin( 'Modern' );
+
       $wgScriptPath = "${siteConfig.mediawiki.scriptPath}";
       $wgArticlePath = "${siteConfig.mediawiki.articlePath}";
       $wgUsePathInfo = true;
+      $wgResourceBasePath = $wgScriptPath;
+      $wgLogo = "/img/nb-logo-131.png";
+      $wgFavicon = "/img/favicon.ico";
+
+      $wgEnableEmail = true;
+      $wgEnableUserEmail = true;
       $wgEmergencyContact = "${siteConfig.mediawiki.emergencyContact}";
       $wgPasswordSender = "${siteConfig.mediawiki.passwordSender}";
+      $wgEnotifUserTalk = true;
+      $wgEnotifWatchlist = true;
+      $wgEmailAuthentication = true;
+
+      $wgDBprefix = "${siteConfig.database.tablePrefix}";
+      $wgDBTableOptions = "ENGINE=InnoDB, DEFAULT CHARSET=binary";
+      $wgDBmysql5 = false;
+
+      $wgMainCacheType = CACHE_MEMCACHED;
+      $wgMessageCacheType = CACHE_MEMCACHED;
+      $wgParserCacheType = CACHE_MEMCACHED;
+      $wgMemCachedServers = [ "127.0.0.1:11211" ];
+      $wgEnableSidebarCache = true;
+      $wgSessionsInObjectCache = true;
+      $wgSessionCacheType = CACHE_MEMCACHED;
+
+      $wgEnableUploads = true;
+      $wgUploadDirectory = "${siteConfig.mediawiki.uploadsDir}";
+      $wgUploadPath = "${siteConfig.mediawiki.uploadPath}";
+      $wgUseImageMagick = true;
+      $wgUseImageResize = true;
+      $wgImageMagickConvertCommand = "${pkgs.imagemagick}/bin/convert";
+      $wgUseInstantCommons = true;
+
+      $wgShellLocale = "en_US.utf8";
       $wgLanguageCode = "en";
+      $wgLocaltimezone = "US/Pacific";
+      date_default_timezone_set( $wgLocaltimezone );
+
       $wgSecretKey = trim( file_get_contents( "${mediawikiSecretKey}" ) );
+      $wgAuthenticationTokenVersion = "1";
       $wgUpgradeKey = trim( file_get_contents( "${mediawikiUpgradeKey}" ) );
-      $wgEnableUploads = false;
-      $wgDefaultSkin = "vector-2022";
+
+      $wgRightsUrl = "https://creativecommons.org/licenses/by-nc-sa/4.0/";
+      $wgRightsText = "Creative Commons Attribution-NonCommercial-ShareAlike";
+      $wgRightsIcon = "$wgResourceBasePath/resources/assets/licenses/cc-by-nc-sa.png";
+      $wgDiff3 = "${pkgs.diffutils}/bin/diff3";
+
+      $wgDefaultSkin = "vector";
+      $wgSkipSkins = [
+        'CologneBlue',
+        'MinervaNeue',
+        'MonoBook',
+        'Timeless'
+      ];
+
+      $wgUseGzip = true;
+      $wgUseFileCache = false;
+      $wgFileCacheDirectory = "${siteConfig.mediawiki.fileCacheDir}";
+      $wgShowIPinHeader = false;
+      $wgCdnMaxAge = 7200;
+
+      $wgCaptchaQuestions = [
+        'What is the guiding principle of Noisebridge?' => [ 'be excellent' ],
+      ];
+      $wgCaptchaWhitelistIP = [ '192.195.83.130' ];
+      $wgRateLimitsExcludedIPs = [ '192.195.83.128/29' ];
+      $wgGroupPermissions['user']['noratelimit'] = true;
+      $wgCaptchaClass = 'ReCaptchaNoCaptcha';
+      $wgReCaptchaSiteKey = trim( file_get_contents( "${mediawikiRecaptchaSiteKey}" ) );
+      $wgReCaptchaSecretKey = trim( file_get_contents( "${mediawikiRecaptchaSecretKey}" ) );
+      $wgReCaptchaSendRemoteIP = false;
+      $ceAllowConfirmedEmail = true;
+      $wgCaptchaTriggers['edit'] = true;
+      $wgCaptchaTriggers['create'] = true;
+      $wgCaptchaTriggers['addurl'] = true;
+      $wgCaptchaTriggers['createaccount'] = true;
+      $wgCaptchaTriggers['badlogin'] = true;
+
+      $wgGroupPermissions['*']['createpage'] = false;
+      $wgGroupPermissions['user']['createpage'] = false;
+      $wgGroupPermissions['*']['createtalk'] = false;
+      $wgGroupPermissions['user']['createtalk'] = false;
+      $wgGroupPermissions['autoconfirmed']['createpage'] = true;
+      $wgGroupPermissions['autoconfirmed']['createtalk'] = true;
+      $wgGroupPermissions['*']['move'] = false;
+      $wgGroupPermissions['user']['move'] = false;
+      $wgGroupPermissions['autoconfirmed']['move'] = true;
+      $wgGroupPermissions['*']['upload'] = false;
+      $wgGroupPermissions['user']['upload'] = false;
+      $wgGroupPermissions['autoconfirmed']['upload'] = true;
+      $wgGroupPermissions['*']['skipcaptcha'] = false;
+      $wgGroupPermissions['user']['skipcaptcha'] = false;
+      $wgGroupPermissions['autoconfirmed']['skipcaptcha'] = true;
+      $wgGroupPermissions['emailconfirmed']['skipcaptcha'] = true;
+      $wgGroupPermissions['bot']['skipcaptcha'] = true;
+      $wgGroupPermissions['sysop']['skipcaptcha'] = true;
+      $wgGroupPermissions['confirmed'] = $wgGroupPermissions['autoconfirmed'];
+      $wgAutoConfirmCount = 5;
+      $wgAutoConfirmAge = 86400 * 3;
+      $wgAutopromote = [
+        "autoconfirmed" => [ "&", [ APCOND_EDITCOUNT, &$wgAutoConfirmCount ], [ APCOND_AGE, &$wgAutoConfirmAge ], APCOND_EMAILCONFIRMED ],
+      ];
+
+      $wgFileExtensions[] = 'pdf';
+      $wgFileExtensions[] = 'svg';
+
+      $wgGroupPermissions['sysop']['checkuser'] = true;
+      $wgGroupPermissions['sysop']['checkuser-log'] = true;
+      $wgGroupPermissions['sysop']['investigate'] = true;
+      $wgGroupPermissions['sysop']['checkuser-temporary-account'] = true;
+      $wgGroupPermissions['interface-admin']['gadgets-edit'] = true;
+      $wgGroupPermissions['interface-admin']['gadgets-definition-edit'] = true;
+      $wgPopupsVirtualPageViews = true;
+      $wgPopupsReferencePreviewsBetaFeature = false;
+      $wgPopupsOptInDefaultState = 1;
+      $wgGroupPermissions['*']['createaccount'] = false;
+      $wgGroupPermissions['bureaucrat']['createaccount'] = true;
+      $wgAllowUserJs = true;
+      $wgAllowUserCss = true;
+      $wgGroupPermissions['sysop']['interwiki'] = true;
+      $wgGroupPermissions['bureaucrat']['invitesignup'] = true;
+      $wgGroupPermissions['invitesignup']['invitesignup'] = true;
+      $wgISGroupsRequired = [ 'invitedIS' ];
+      $wgScribuntoDefaultEngine = 'luasandbox';
+      $wgForeignFileRepos[] = [
+        'class' => ForeignAPIRepo::class,
+        'name' => 'commonswiki',
+        'apibase' => 'https://commons.wikimedia.org/w/api.php',
+        'hashLevels' => 2,
+        'fetchDescription' => true,
+        'descriptionCacheExpiry' => 43200,
+        'apiThumbCacheExpiry' => 86400,
+      ];
       $wgReadOnly = '${siteConfig.mediawiki.readOnlyMessage}';
     '';
   };
@@ -185,6 +345,22 @@ in
     virtualHosts.${wikiDomain}.extraConfig = ''
       encode zstd gzip
       root * ${config.services.mediawiki.finalPackage}/share/mediawiki
+
+      handle_path /images/* {
+        root * ${siteConfig.mediawiki.uploadsDir}
+        file_server
+      }
+
+      handle_path /img/* {
+        root * ${siteConfig.mediawiki.staticAssetsDir}
+        file_server
+      }
+
+      @favicon path /favicon.ico
+      handle @favicon {
+        root * ${siteConfig.mediawiki.staticAssetsDir}
+        file_server
+      }
 
       redir / /wiki 308
 
@@ -204,5 +380,7 @@ in
   systemd.tmpfiles.rules = [
     "d /srv/mediawiki 0755 root root -"
     "d ${siteConfig.mediawiki.uploadsDir} 0750 mediawiki mediawiki -"
+    "d ${siteConfig.mediawiki.staticAssetsDir} 0755 mediawiki mediawiki -"
+    "d ${siteConfig.mediawiki.fileCacheDir} 0755 mediawiki mediawiki -"
   ];
 }

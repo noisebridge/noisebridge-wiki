@@ -17,6 +17,8 @@ in
   "shared/mysql-mediawiki.age".publicKeys = adminKeys ++ allHosts;
   "shared/mysql-replication.age".publicKeys = adminKeys ++ allHosts;
   "shared/mediawiki-admin-password.age".publicKeys = adminKeys ++ allHosts;
+  "shared/mediawiki-recaptcha-secret-key.age".publicKeys = adminKeys ++ allHosts;
+  "shared/mediawiki-recaptcha-site-key.age".publicKeys = adminKeys ++ allHosts;
   "shared/mediawiki-secret-key.age".publicKeys = adminKeys ++ allHosts;
   "shared/mediawiki-upgrade-key.age".publicKeys = adminKeys ++ allHosts;
 }

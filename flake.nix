@@ -62,10 +62,42 @@
           emergencyContact = "webmaster@noisebridge.net";
           passwordSender = "do-not-reply@noisebridge.net";
           readOnlyMessage = "This wiki replica is read-only.";
+          allowedSkins = [
+            "Vector"
+            "Modern"
+          ];
+          enabledExtensions = [
+            "AdminLinks"
+            "BetaFeatures"
+            "CategoryTree"
+            "CharInsert"
+            "CheckUser"
+            "ConfirmAccount"
+            "ConfirmEdit"
+            "EmbedVideo"
+            "Gadgets"
+            "ImageMap"
+            "Interwiki"
+            "InviteSignup"
+            "MultimediaViewer"
+            "Nuke"
+            "PageImages"
+            "ParserFunctions"
+            "Popups"
+            "QRLite"
+            "Renameuser"
+            "Scribunto"
+            "TextExtracts"
+          ];
+          deferredExtensions = [
+            "mwGoogleSheet"
+            "VisualEditor"
+          ];
         };
 
         database = {
           name = "noisebridge_mediawiki";
+          sourceName = "wiki";
           mediawikiUser = "wiki";
           replicationUser = "repl";
           tablePrefix = "wiki_";

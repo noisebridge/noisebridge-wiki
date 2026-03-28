@@ -16,9 +16,9 @@ in
     CheckUser = fetchRelExtension "CheckUser" "sha256-b/3TZdRIEg7jwWynNHjluRyS0rwdtbY1ahZLALq4tWc=";
     ConfirmAccount = fetchRelExtension "ConfirmAccount" "sha256-8sXziggkquQdvXuUD/asbhVQglLiFzuYCVe9FePR9NY=";
     ConfirmEdit = fetchRelExtension "ConfirmEdit" "sha256-GQb5qe/T0gmFZJ55dKQKYZUoKlk+Iak8pr8kDOpUeHk=";
-    Gadgets = fetchRelExtension "Gadgets" "sha256-FiniUL1fdFJEzW48D2f/eioJb/AfFaOOtn7Y14Z9aGg=";
-    ImageMap = fetchRelExtension "ImageMap" "sha256-PKdMwS+6DiwAotcLRHzF1u8ppaoHSGb4HXS6eraKr34=";
-    Interwiki = fetchRelExtension "Interwiki" "sha256-7RQcDhPlO1y0o+eT4+DIvlPdes5D5wqoHy2OXvsi7jU=";
+    Gadgets = fetchRelExtension "Gadgets" "sha256-vg3xVdgMPg7YqoFTsqHfvUYdy9rNFpBvv/CVKTdeIF4=";
+    ImageMap = fetchRelExtension "ImageMap" "sha256-sId/eXP4r2eJvUVuGsglMyYm6vFjzwqSOml6u6ujIcU=";
+    Interwiki = fetchRelExtension "Interwiki" "sha256-Wk2DvBGigv2LIzOafUiIE5Cc62W+enIG3yVVczRKZyw=";
     InviteSignup = fetchRelExtension "InviteSignup" "sha256-ZTomHYQ/TGanb0/nsegXyYy2hYF+bMe1cLmmKevFJSw=";
     MultimediaViewer = fetchRelExtension "MultimediaViewer" "sha256-1zJbeHj8kbVpk/W04P8r1yQNcdal1h82l2orlswNRcA=";
     Nuke = fetchRelExtension "Nuke" "sha256-HXHhmDB+uZW7s0hs1j3YNwoMoXAjF27KRrnw3V8t5L4=";
