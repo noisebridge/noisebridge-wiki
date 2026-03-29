@@ -76,15 +76,20 @@
             "CategoryTree"
             "CharInsert"
             "CheckUser"
+            "Echo"
             "ConfirmAccount"
             "ConfirmEdit"
             "EmbedVideo"
             "Gadgets"
+            "Graph"
             "ImageMap"
+            "InputBox"
             "Interwiki"
             "InviteSignup"
+            "JsonConfig"
             "MultimediaViewer"
             "mwGoogleSheet"
+            "NBWTF"
             "Nuke"
             "PageImages"
             "ParserFunctions"
@@ -92,10 +97,17 @@
             "QRLite"
             "Renameuser"
             "Scribunto"
+            "Thanks"
             "TextExtracts"
             "VisualEditor"
           ];
-          deferredExtensions = [ ];
+          deferredExtensions = [
+            "Cite"
+            "CodeEditor"
+            "OATHAuth"
+            "TemplateData"
+            "WikiEditor"
+          ];
         };
 
         database = {
