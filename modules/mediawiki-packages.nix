@@ -85,7 +85,7 @@ in
         "sha256-uDdO3mwRiGrwNX7Kh7IpAV1SPIxzs7wHyugXh7yJwm0=";
     MultimediaViewer =
       fetchWikimediaExtension "MultimediaViewer" "bedf4c47d7796b1f5475194cd96cf5fd4e3a73c3"
-        "sha256-1zJbeHj8kbVpk/W04P8r1yQNcdal1h82l2orlswNRcA=";
+        "sha256-KtO+D0DFiZFuLEn5uMbQjOtfQlyf9MzkNiy3cHEk1T4=";
     mwGoogleSheet =
       fetchGitHubArchive "marcidy/mwGoogleSheet" "c1d447be069cfad830bd493bd0e15b1be528d2de"
         "sha256-B0URmW+MAxwXn6pIr4CnQBl+vLqt+81M1lGfMHx7TKs=";
@@ -101,7 +101,7 @@ in
       '';
     Nuke =
       fetchWikimediaExtension "Nuke" "5d5467046647117fb7fda5890afd54d550842426"
-        "sha256-HXHhmDB+uZW7s0hs1j3YNwoMoXAjF27KRrnw3V8t5L4=";
+        "sha256-3kHM+2DuItAotagnI0Suhv5vP9fnrmvCYJutxv/QRYY=";
     OATHAuth =
       fetchWikimediaExtension "OATHAuth" "70b5eddad19431a8cda3c33291d80d937614e2a0"
         "sha256-sUdxH9sZjZbZ9xWcItLuvq4vwyu/DdrLvjUBsDiq6Ng=";
@@ -110,7 +110,7 @@ in
         "sha256-4vVEt3WhPJAxGcqYKViqWt/ls2YKY9lRtsuVyg59SY4=";
     ParserFunctions =
       fetchWikimediaExtension "ParserFunctions" "afca9e971d37af840beb0d18b3cd1bb288cff2da"
-        "sha256-A5U3cjMN+Cem1irork4q9Y64XK9qFjxpD9btBT3mjPc=";
+        "sha256-OZrCR9EWyUHzIwwOBabO4jlw3M/B9IKHeDD0gy5CHF0=";
     Popups =
       fetchWikimediaExtension "Popups" "077e5d5d736350c317eb0e89d74cb865bec94be5"
         "sha256-2pTf+tlaMv3zc0st8yYMPNRr2lQKO/ZgQCwQeWX4/cY=";
@@ -125,7 +125,7 @@ in
         "sha256-eZmD/YViugtgMaCZ+bqyqM6esqIRLwLN2WIflv2E8NM=";
     TextExtracts =
       fetchWikimediaExtension "TextExtracts" "8fc857df757cd105bc79e36f0a4e8ad53ae92921"
-        "sha256-BdRlHwR3Ws5qVqv4+6P/xtXIc2x7UKv1pbWkkFj4sWg=";
+        "sha256-L3naN3jkvX4XjunvkKTCoz+CAgLFVzOALZhtaCtGfRE=";
     Thanks =
       fetchWikimediaExtension "Thanks" "2e494787e401eea347f686ccf5ff5576b7671596"
         "sha256-ZvSf8VvdOmvN+3Fol0BLB52m5yRUfMGRzfsBBpgQLA0=";
@@ -156,7 +156,7 @@ in
   skins = {
     CologneBlue =
       fetchWikimediaSkin "CologneBlue" "0aa60e3dccae25d9c03e7e8dd1b42ff396fafb73"
-        "sha256-6jRaOmASYyn9RMYktUI1FZr4EYTqbA1bDweCOBSvwU8=";
+        "sha256-Q5B7EWmZlKWSnHg/Rsl6pdO/lto5OOmSnO04z8//8cM=";
     MinervaNeue =
       fetchWikimediaSkin "MinervaNeue" "91b152c07c0948c08a54c3b4ef80875ab6adccae"
         "sha256-CMTXnVGeRDXzIaisQ4R5CvpEjKRkUurBXGe88BhgsDc=";
