@@ -107,7 +107,7 @@ in
         "sha256-sUdxH9sZjZbZ9xWcItLuvq4vwyu/DdrLvjUBsDiq6Ng=";
     PageImages =
       fetchWikimediaExtension "PageImages" "1c5af7d601ba8da3b6fe63e8d6e355a8a807ca44"
-        "sha256-HKv4zj9yIDwIcJ+Y+YBMPK6IjaJ5lQj9R9qJg/h5DFk=";
+        "sha256-4vVEt3WhPJAxGcqYKViqWt/ls2YKY9lRtsuVyg59SY4=";
     ParserFunctions =
       fetchWikimediaExtension "ParserFunctions" "afca9e971d37af840beb0d18b3cd1bb288cff2da"
         "sha256-A5U3cjMN+Cem1irork4q9Y64XK9qFjxpD9btBT3mjPc=";
