@@ -63,7 +63,12 @@
           passwordSender = "do-not-reply@noisebridge.net";
           readOnlyMessage = "This wiki replica is read-only.";
           allowedSkins = [
+            "CologneBlue"
+            "MonoBook"
             "Vector"
+            "MinervaNeue"
+            "Modern"
+            "Timeless"
           ];
           enabledExtensions = [
             "AdminLinks"

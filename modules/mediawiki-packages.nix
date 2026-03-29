@@ -44,6 +44,26 @@ in
   };
 
   skins = {
+    CologneBlue = pkgs.fetchzip {
+      url = "https://github.com/wikimedia/mediawiki-skins-CologneBlue/archive/refs/heads/REL1_45.tar.gz";
+      hash = "sha256-6jRaOmASYyn9RMYktUI1FZr4EYTqbA1bDweCOBSvwU8=";
+    };
+    MinervaNeue = pkgs.fetchzip {
+      url = "https://github.com/wikimedia/mediawiki-skins-MinervaNeue/archive/refs/heads/REL1_45.tar.gz";
+      hash = "sha256-CMTXnVGeRDXzIaisQ4R5CvpEjKRkUurBXGe88BhgsDc=";
+    };
+    Modern = pkgs.fetchzip {
+      url = "https://github.com/wikimedia/mediawiki-skins-Modern/archive/refs/heads/REL1_45.tar.gz";
+      hash = "sha256-KxUUU8FCgLJOboBthsMPFRp94nzmZAa1dbedhkCxYN0=";
+    };
+    MonoBook = pkgs.fetchzip {
+      url = "https://github.com/wikimedia/mediawiki-skins-MonoBook/archive/refs/heads/REL1_45.tar.gz";
+      hash = "sha256-qCMGTfJn1xS/MWN1UEz7I6fIgTOVWIzNoBI5gr1LDZM=";
+    };
+    Timeless = pkgs.fetchzip {
+      url = "https://github.com/wikimedia/mediawiki-skins-Timeless/archive/refs/heads/REL1_45.tar.gz";
+      hash = "sha256-/bpzwEdovd8Lh+JTIBrr+e0vWihc2dtyjNKdVkYCeaM=";
+    };
     Vector = pkgs.fetchzip {
       url = "https://github.com/wikimedia/mediawiki-skins-Vector/archive/refs/heads/REL1_45.tar.gz";
       hash = "sha256-hlZNbeDcFlAfhPO1T/A/1EcgIr//S7t7+BsU4GqsrAo=";

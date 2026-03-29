@@ -181,6 +181,11 @@ in
       imagemagick
     ];
     skins = lib.mkForce {
+      CologneBlue = mediawikiPackages.skins.CologneBlue;
+      MinervaNeue = mediawikiPackages.skins.MinervaNeue;
+      Modern = mediawikiPackages.skins.Modern;
+      MonoBook = mediawikiPackages.skins.MonoBook;
+      Timeless = mediawikiPackages.skins.Timeless;
       Vector = mediawikiPackages.skins.Vector;
     };
     extensions = enabledExtensions;
