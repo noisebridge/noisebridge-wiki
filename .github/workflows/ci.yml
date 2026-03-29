@@ -1,6 +1,7 @@
 name: CI
 
 on:
+  workflow_dispatch:
   pull_request:
   push:
     branches:
@@ -18,13 +19,13 @@ jobs:
       - uses: DeterminateSystems/nix-installer-action@main
 
       - name: nix flake check
-        run: nix flake check --print-build-logs
+        run: nix flake check --accept-flake-config --print-build-logs
 
       - name: Build primary host
-        run: nix build .#nixosConfigurations.main-wiki.config.system.build.toplevel --print-build-logs
+        run: nix build .#nixosConfigurations.main-wiki.config.system.build.toplevel --accept-flake-config --print-build-logs
 
       - name: Build replica host
-        run: nix build .#nixosConfigurations.replica-wiki.config.system.build.toplevel --print-build-logs
+        run: nix build .#nixosConfigurations.replica-wiki.config.system.build.toplevel --accept-flake-config --print-build-logs
 
   deploy:
     needs: check

@@ -28,7 +28,7 @@ in
     ImageMap = fetchRelExtension "ImageMap" "sha256-sId/eXP4r2eJvUVuGsglMyYm6vFjzwqSOml6u6ujIcU=";
     InputBox = fetchRelExtension "InputBox" "sha256-VVp03d6Q7q+gAYemOjj9EYHH3QUfco3VoqSHwLYSp48=";
     Interwiki = fetchRelExtension "Interwiki" "sha256-Wk2DvBGigv2LIzOafUiIE5Cc62W+enIG3yVVczRKZyw=";
-    InviteSignup = fetchRelExtension "InviteSignup" "sha256-ZTomHYQ/TGanb0/nsegXyYy2hYF+bMe1cLmmKevFJSw=";
+    InviteSignup = fetchRelExtension "InviteSignup" "sha256-Q4Pe1kr3aWEK7XpDaD4Mq6t5Rs4/oYUgEc2bOZGMWf0=";
     JsonConfig = fetchRelExtension "JsonConfig" "sha256-uDdO3mwRiGrwNX7Kh7IpAV1SPIxzs7wHyugXh7yJwm0=";
     MultimediaViewer = fetchRelExtension "MultimediaViewer" "sha256-1zJbeHj8kbVpk/W04P8r1yQNcdal1h82l2orlswNRcA=";
     mwGoogleSheet = pkgs.fetchzip {
