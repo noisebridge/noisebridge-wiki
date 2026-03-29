@@ -9,6 +9,7 @@ fi
 dump_dir="$1"
 mode="${2:-all}"
 main_ssh_host="${MAIN_SSH_HOST:-jet@main-wiki.extremist.software}"
+replica_ssh_host="${REPLICA_SSH_HOST:-jet@replica-wiki.extremist.software}"
 remote_mediawiki_dir="${REMOTE_MEDIAWIKI_DIR:-/srv/mediawiki}"
 rsync_base=(rsync -aH --info=progress2 --rsync-path="sudo rsync")
 
@@ -29,18 +30,27 @@ case "$mode" in
     ;;
 esac
 
-ssh "$main_ssh_host" "sudo mkdir -p '${remote_mediawiki_dir}/images' '${remote_mediawiki_dir}/img' /var/lib/noisebridge-migration" 
+ssh "$main_ssh_host" "sudo mkdir -p '${remote_mediawiki_dir}/images' '${remote_mediawiki_dir}/img' /var/lib/noisebridge-migration"
+ssh "$replica_ssh_host" "sudo mkdir -p '${remote_mediawiki_dir}/images' '${remote_mediawiki_dir}/img'"
 
 if $copy_images && [ -d "$dump_dir/images" ]; then
   echo "Importing images/ to ${main_ssh_host}" >&2
   "${rsync_base[@]}" "$dump_dir/images/" "${main_ssh_host}:${remote_mediawiki_dir}/images/"
-  ssh "$main_ssh_host" "sudo chown -R mediawiki:mediawiki '${remote_mediawiki_dir}/images'"
+  ssh "$main_ssh_host" "sudo chown -R mediawiki:mediawiki '${remote_mediawiki_dir}/images' && sudo chmod -R a+rX '${remote_mediawiki_dir}/images'"
+
+  echo "Importing images/ to ${replica_ssh_host}" >&2
+  "${rsync_base[@]}" "$dump_dir/images/" "${replica_ssh_host}:${remote_mediawiki_dir}/images/"
+  ssh "$replica_ssh_host" "sudo chown -R mediawiki:mediawiki '${remote_mediawiki_dir}/images' && sudo chmod -R a+rX '${remote_mediawiki_dir}/images'"
 fi
 
 if $copy_img && [ -d "$dump_dir/img" ]; then
   echo "Importing img/ to ${main_ssh_host}" >&2
   "${rsync_base[@]}" "$dump_dir/img/" "${main_ssh_host}:${remote_mediawiki_dir}/img/"
-  ssh "$main_ssh_host" "sudo chown -R mediawiki:mediawiki '${remote_mediawiki_dir}/img'"
+  ssh "$main_ssh_host" "sudo chown -R mediawiki:mediawiki '${remote_mediawiki_dir}/img' && sudo chmod -R a+rX '${remote_mediawiki_dir}/img'"
+
+  echo "Importing img/ to ${replica_ssh_host}" >&2
+  "${rsync_base[@]}" "$dump_dir/img/" "${replica_ssh_host}:${remote_mediawiki_dir}/img/"
+  ssh "$replica_ssh_host" "sudo chown -R mediawiki:mediawiki '${remote_mediawiki_dir}/img' && sudo chmod -R a+rX '${remote_mediawiki_dir}/img'"
 fi
 
 if [ -f "$dump_dir/LocalSettings.php" ]; then

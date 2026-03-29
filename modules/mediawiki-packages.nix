@@ -66,10 +66,23 @@ in
       url = "https://github.com/gesinn-it/QRLite/archive/refs/heads/master.zip";
       hash = "sha256-2lDe2gkHVZcUc7O15xqLn8C3NHlNA3ABtZtXnosK8G8=";
     };
-    EmbedVideo = pkgs.fetchzip {
-      url = "https://gitlab.com/HydraWiki/extensions/EmbedVideo/-/archive/v2.9.0/EmbedVideo-v2.9.0.zip";
-      hash = "sha256-YW/bTJ0lT+obmhj2DStQs5WngonLQhC+3pt2V//V7+A=";
-    };
+    EmbedVideo =
+      let
+        src = pkgs.fetchzip {
+          url = "https://gitlab.com/HydraWiki/extensions/EmbedVideo/-/archive/v2.9.0/EmbedVideo-v2.9.0.zip";
+          hash = "sha256-YW/bTJ0lT+obmhj2DStQs5WngonLQhC+3pt2V//V7+A=";
+        };
+      in
+      pkgs.runCommand "EmbedVideo"
+        {
+          inherit src;
+        }
+        ''
+          cp -R "$src" "$out"
+          chmod -R u+w "$out"
+          sed -i "s/\$out->addModules('ext.embedVideo');/\$out->addModules(['ext.embedVideo']);/" "$out/EmbedVideo.hooks.php"
+          sed -i "s/\$out->addModuleStyles('ext.embedVideo.styles');/\$out->addModuleStyles(['ext.embedVideo.styles']);/" "$out/EmbedVideo.hooks.php"
+        '';
   };
 
   skins = {

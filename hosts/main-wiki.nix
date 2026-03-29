@@ -367,7 +367,7 @@ in
 
   systemd.tmpfiles.rules = [
     "d /srv/mediawiki 0755 root root -"
-    "d ${siteConfig.mediawiki.uploadsDir} 0750 mediawiki mediawiki -"
+    "d ${siteConfig.mediawiki.uploadsDir} 0755 mediawiki mediawiki -"
     "d ${siteConfig.mediawiki.staticAssetsDir} 0755 mediawiki mediawiki -"
     "d ${siteConfig.mediawiki.fileCacheDir} 0755 mediawiki mediawiki -"
   ];
