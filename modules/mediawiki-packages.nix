@@ -35,10 +35,21 @@ in
       url = "https://github.com/marcidy/mwGoogleSheet/archive/refs/heads/REL1_27.tar.gz";
       hash = "sha256-B0URmW+MAxwXn6pIr4CnQBl+vLqt+81M1lGfMHx7TKs=";
     };
-    NBWTF = pkgs.fetchzip {
-      url = "https://github.com/audiodude/nb.wtf/archive/refs/heads/main.tar.gz";
-      hash = "sha256-KJ0oZgEDK7M6iSfOFbpc85GmjcJtrNnluBt1zkGDOH8=";
-    };
+    NBWTF =
+      let
+        src = pkgs.fetchzip {
+          url = "https://github.com/audiodude/nb.wtf/archive/refs/heads/main.tar.gz";
+          hash = "sha256-KJ0oZgEDK7M6iSfOFbpc85GmjcJtrNnluBt1zkGDOH8=";
+        };
+      in
+      pkgs.runCommand "NBWTF"
+        {
+          inherit src;
+        }
+        ''
+          mkdir -p "$out"
+          cp -R "$src/extension/NBWTF/." "$out/"
+        '';
     Nuke = fetchRelExtension "Nuke" "sha256-HXHhmDB+uZW7s0hs1j3YNwoMoXAjF27KRrnw3V8t5L4=";
     OATHAuth = fetchRelExtension "OATHAuth" "sha256-sUdxH9sZjZbZ9xWcItLuvq4vwyu/DdrLvjUBsDiq6Ng=";
     PageImages = fetchRelExtension "PageImages" "sha256-HKv4zj9yIDwIcJ+Y+YBMPK6IjaJ5lQj9R9qJg/h5DFk=";
