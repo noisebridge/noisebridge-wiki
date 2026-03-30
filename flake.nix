@@ -8,6 +8,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-mediawiki-1_39.url = "github:NixOS/nixpkgs/nixos-23.05";
     agenix = {
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -22,6 +23,7 @@
     {
       self,
       nixpkgs,
+      nixpkgs-mediawiki-1_39,
       agenix,
       deploy-rs,
       ...
@@ -29,7 +31,16 @@
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
+      mediawikiLegacyPkgs = nixpkgs-mediawiki-1_39.legacyPackages.${system};
       lib = nixpkgs.lib;
+
+      mediawikiCorePackage = mediawikiLegacyPkgs.mediawiki.overrideAttrs (_: {
+        version = "1.39.13";
+        src = mediawikiLegacyPkgs.fetchurl {
+          url = "https://releases.wikimedia.org/mediawiki/1.39/mediawiki-1.39.13.tar.gz";
+          hash = "sha256-u3AMCXkuzgh3GBoXTBaHOJ09/5PIpfOfgbp1Cb3r7NY=";
+        };
+      });
 
       siteConfig = rec {
         wikiName = "Noisebridge";
@@ -151,7 +162,12 @@
         lib.nixosSystem {
           inherit system;
           specialArgs = {
-            inherit agenix siteConfig hostMeta;
+            inherit
+              agenix
+              siteConfig
+              hostMeta
+              mediawikiCorePackage
+              ;
           };
           modules = [
             agenix.nixosModules.default

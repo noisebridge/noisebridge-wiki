@@ -2,6 +2,7 @@
   config,
   hostMeta,
   lib,
+  mediawikiCorePackage,
   pkgs,
   siteConfig,
   ...
@@ -163,6 +164,7 @@ in
   services.mediawiki = {
     enable = true;
     name = siteConfig.wikiName;
+    package = mediawikiCorePackage;
     url = "https://${wikiDomain}";
     webserver = "none";
     passwordFile = mediawikiAdminPassword;

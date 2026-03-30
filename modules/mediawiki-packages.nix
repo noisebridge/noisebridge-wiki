@@ -14,12 +14,12 @@ let
       inherit hash;
     };
 
-  fetchGitilesArchive =
+  fetchGitilesGit =
     path: rev: hash:
-    pkgs.fetchzip {
-      url = "https://gerrit.wikimedia.org/r/plugins/gitiles/${path}/+archive/${rev}.tar.gz";
-      inherit hash;
-      stripRoot = false;
+    pkgs.fetchgit {
+      url = "https://gerrit.wikimedia.org/r/${path}";
+      inherit rev hash;
+      fetchSubmodules = true;
     };
 
   fetchWikimediaExtension =
@@ -66,7 +66,7 @@ in
       fetchWikimediaExtension "Gadgets" "888443ff0ea365b7ef7cea51f872b473cbb55bd7"
         "sha256-vg3xVdgMPg7YqoFTsqHfvUYdy9rNFpBvv/CVKTdeIF4=";
     Graph =
-      fetchGitilesArchive "mediawiki/extensions/Graph" "bd416299450c4cdd608563ad2faebb43cde9a3db"
+      fetchGitilesGit "mediawiki/extensions/Graph" "bd416299450c4cdd608563ad2faebb43cde9a3db"
         "sha256-VgOA0VROh/Vtnb54+BgApVpsckcCalN6wh+Fc69zQII=";
     ImageMap =
       fetchWikimediaExtension "ImageMap" "3deaecb20f7ca9c7df79ebce285e4d87bd6b4e67"
