@@ -76,7 +76,7 @@ We haven't fully implemented all the features, but the remaining work is tracked
 
 - [ ] Require reviewed PRs before merge to `main`
 - [ ] Block direct pushes to `main`
-- [ ] Keep `nix flake check` required in CI
+- [ ] Keep the `check` CI job required in GitHub
 - [ ] Keep both host builds required in CI
 - [ ] Keep automatic deploys on pushes to `main`
 - [ ] Add post-deploy smoke checks if needed
@@ -196,7 +196,7 @@ nix run .#deploy -- .#replica-wiki
 Check the flake:
 
 ```sh
-nix flake check 'path:.'
+nix run .#check
 ```
 
 ## Secret Model

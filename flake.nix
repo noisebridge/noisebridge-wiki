@@ -208,6 +208,17 @@
       checks = builtins.mapAttrs (_: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
 
       apps.${system} = {
+        check = {
+          type = "app";
+          program = "${pkgs.writeShellScript "check-noisebridge" ''
+            nix build .#checks.${system}.deploy-activate
+            nix build .#checks.${system}.deploy-schema
+            nix build .#nixosConfigurations.main-wiki.config.system.build.toplevel --print-build-logs
+            nix build .#nixosConfigurations.replica-wiki.config.system.build.toplevel --print-build-logs
+          ''}";
+          meta.description = "Run Noisebridge wiki validation and host builds";
+        };
+
         deploy = {
           type = "app";
           program = "${pkgs.writeShellScript "deploy-noisebridge" ''
