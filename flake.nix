@@ -35,7 +35,13 @@
         wikiName = "Noisebridge";
         baseDomain = "extremist.software";
         sshUser = "jet";
+        deploySshUser = "github-actions";
         adminUsers = {
+          github-actions = {
+            openssh.authorizedKeys.keys = [
+              "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOa5REOdpPV8LloMLXb/6JIHkdrTyKieBneDThd+w3KM github-actions deploy"
+            ];
+          };
           jet = {
             openssh.authorizedKeys.keys = [
               "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE40ISu3ydCqfdpb26JYD5cIN0Fu0id/FDS+xjB5zpqu jetthomaspham@gmail.com"
@@ -170,7 +176,7 @@
         main-wiki = {
           hostname = primaryMeta.publicIpv4;
           remoteBuild = false;
-          sshUser = siteConfig.sshUser;
+          sshUser = siteConfig.deploySshUser;
           profiles.system = {
             user = "root";
             path = deploy-rs.lib.${system}.activate.nixos self.nixosConfigurations.main-wiki;
@@ -180,7 +186,7 @@
         replica-wiki = {
           hostname = replicaMeta.publicIpv4;
           remoteBuild = false;
-          sshUser = siteConfig.sshUser;
+          sshUser = siteConfig.deploySshUser;
           profiles.system = {
             user = "root";
             path = deploy-rs.lib.${system}.activate.nixos self.nixosConfigurations.replica-wiki;

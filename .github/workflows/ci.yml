@@ -44,8 +44,14 @@ jobs:
           mkdir -p ~/.ssh
           printf '%s\n' "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
-          ssh-keyscan -t ed25519 "$(nix eval --raw .#deploy.nodes.\"main-wiki\".hostname)" >> ~/.ssh/known_hosts 2>/dev/null
-          ssh-keyscan -t ed25519 "$(nix eval --raw .#deploy.nodes.\"replica-wiki\".hostname)" >> ~/.ssh/known_hosts 2>/dev/null
+          ssh-keyscan -t ed25519 "$(nix eval --accept-flake-config --raw .#deploy.nodes.\"main-wiki\".hostname)" >> ~/.ssh/known_hosts 2>/dev/null
+          ssh-keyscan -t ed25519 "$(nix eval --accept-flake-config --raw .#deploy.nodes.\"replica-wiki\".hostname)" >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Configure deploy signing key
+        run: |
+          mkdir -p ~/.config/noisebridge-wiki
+          printf '%s\n' "${{ secrets.DEPLOY_SIGNING_KEY }}" > ~/.config/noisebridge-wiki/deploy-signing-key
+          chmod 600 ~/.config/noisebridge-wiki/deploy-signing-key
 
       - name: Deploy all hosts
-        run: nix run .#deploy
+        run: nix run --accept-flake-config .#deploy
