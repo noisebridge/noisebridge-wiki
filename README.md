@@ -196,7 +196,7 @@ nix run .#deploy -- .#replica-wiki
 Check the flake:
 
 ```sh
-nix flake check 'path:.' --accept-flake-config
+nix flake check 'path:.'
 ```
 
 ## Secret Model

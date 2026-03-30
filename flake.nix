@@ -1,11 +1,6 @@
 {
   description = "Basic MediaWiki primary + replica deployment";
 
-  nixConfig = {
-    max-jobs = "auto";
-    cores = 0;
-  };
-
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-mediawiki-1_39.url = "github:NixOS/nixpkgs/nixos-23.05";
@@ -223,13 +218,13 @@
               exit 1
             fi
 
-            nix build .#checks.${system}.deploy-activate --accept-flake-config
-            nix build .#checks.${system}.deploy-schema --accept-flake-config
+            nix build .#checks.${system}.deploy-activate
+            nix build .#checks.${system}.deploy-schema
 
-            main_path=$(nix build '.#deploy.nodes.main-wiki.profiles.system.path' --accept-flake-config --print-out-paths)
+            main_path=$(nix build '.#deploy.nodes.main-wiki.profiles.system.path' --print-out-paths)
             ${pkgs.nix}/bin/nix store sign --recursive --key-file "$deploy_signing_key" "$main_path"
 
-            replica_path=$(nix build '.#deploy.nodes.replica-wiki.profiles.system.path' --accept-flake-config --print-out-paths)
+            replica_path=$(nix build '.#deploy.nodes.replica-wiki.profiles.system.path' --print-out-paths)
             ${pkgs.nix}/bin/nix store sign --recursive --key-file "$deploy_signing_key" "$replica_path"
 
             if [ "$#" -eq 0 ] || [ "''${1#-}" != "$1" ]; then
