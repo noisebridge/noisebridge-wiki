@@ -21,15 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: DeterminateSystems/nix-installer-action@v22
-        with:
-          extra-conf: |
-            extra-trusted-substituters = http://127.0.0.1:37515
-
-      - uses: DeterminateSystems/magic-nix-cache-action@v13
-        with:
-          use-flakehub: false
-          use-gha-cache: true
+      - uses: cachix/install-nix-action@v31
 
       - name: Run repository checks
         run: nix run .#check
@@ -43,15 +35,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: DeterminateSystems/nix-installer-action@v22
-        with:
-          extra-conf: |
-            extra-trusted-substituters = http://127.0.0.1:37515
-
-      - uses: DeterminateSystems/magic-nix-cache-action@v13
-        with:
-          use-flakehub: false
-          use-gha-cache: true
+      - uses: cachix/install-nix-action@v31
 
       - name: Run repository checks
         run: nix run .#check
