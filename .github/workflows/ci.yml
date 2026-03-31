@@ -71,4 +71,4 @@ jobs:
           chmod 600 ~/.config/noisebridge-wiki/deploy-signing-key
 
       - name: Deploy all hosts
-        run: nix run .#deploy
+        run: nix run .#deploy -- github-actions

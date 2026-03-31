@@ -222,6 +222,16 @@
         deploy = {
           type = "app";
           program = "${pkgs.writeShellScript "deploy-noisebridge" ''
+            if [ "$#" -lt 1 ] || [ "''${1#-}" != "$1" ]; then
+              printf 'Usage: nix run .#deploy -- <ssh-user> [deploy-rs args or target]\n' >&2
+              printf 'Example: nix run .#deploy -- github-actions\n' >&2
+              printf 'Example: nix run .#deploy -- jet .#main-wiki\n' >&2
+              exit 1
+            fi
+
+            deploy_user="$1"
+            shift
+
             deploy_signing_key="''${LOCAL_KEY:-''${NOISEBRIDGE_DEPLOY_SIGNING_KEY:-$HOME/.config/noisebridge-wiki/deploy-signing-key}}"
             if [ ! -f "$deploy_signing_key" ]; then
               printf 'Missing deploy signing key: %s\n' "$deploy_signing_key" >&2
@@ -240,6 +250,7 @@
                 --auto-rollback true \
                 --magic-rollback true \
                 --skip-checks \
+                --ssh-user "$deploy_user" \
                 path:.# \
                 "$@"
             fi
@@ -248,9 +259,10 @@
               --auto-rollback true \
               --magic-rollback true \
               --skip-checks \
+              --ssh-user "$deploy_user" \
               "$@"
           ''}";
-          meta.description = "Deploy all Noisebridge wiki hosts by default";
+          meta.description = "Deploy hosts with an explicit SSH user";
         };
 
         bootstrap-host = {
