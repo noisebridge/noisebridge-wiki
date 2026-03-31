@@ -36,7 +36,7 @@
   services.timesyncd.enable = true;
 
   system.activationScripts.restart-logind.text = ''
-    systemctl restart systemd-logind.service || true
+    ${pkgs.systemd}/bin/systemctl restart systemd-logind.service || true
   '';
 
   systemd.tmpfiles.rules = [
