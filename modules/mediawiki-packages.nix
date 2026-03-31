@@ -155,22 +155,22 @@ in
 
   skins = {
     CologneBlue =
-      fetchWikimediaSkin "CologneBlue" "0aa60e3dccae25d9c03e7e8dd1b42ff396fafb73"
-        "sha256-Q5B7EWmZlKWSnHg/Rsl6pdO/lto5OOmSnO04z8//8cM=";
+      fetchWikimediaSkin "CologneBlue" "cf36720efd73c28ccac82cd421c3affae311d41c"
+        "sha256-kaXoQyldP1BC4spshOYcDfVE2IgRmtPOdVIy+AJaelU=";
     MinervaNeue =
-      fetchWikimediaSkin "MinervaNeue" "91b152c07c0948c08a54c3b4ef80875ab6adccae"
-        "sha256-CMTXnVGeRDXzIaisQ4R5CvpEjKRkUurBXGe88BhgsDc=";
+      fetchWikimediaSkin "MinervaNeue" "3aacba1eb30d08432b6f62f79dc3ab970fb5e7c6"
+        "sha256-Rb2HG/raj8A5Jmz20/V9NxfFqkbi3bFZ1vjWX8WfnL0=";
     Modern =
-      fetchWikimediaSkin "Modern" "0c8f0c821b5d092c48e401cff61fd43b8a50f7da"
-        "sha256-KxUUU8FCgLJOboBthsMPFRp94nzmZAa1dbedhkCxYN0=";
+      fetchWikimediaSkin "Modern" "dfa6e0d464ba72113f383ab01bb9f847e751b780"
+        "sha256-ZnMFMD1gbRndow5bCnxGZG3gKz1ncsHs3OHRokIJtuA=";
     MonoBook =
-      fetchWikimediaSkin "MonoBook" "9ce1530f57ead344fe68187501fcb48c76998e1e"
-        "sha256-qCMGTfJn1xS/MWN1UEz7I6fIgTOVWIzNoBI5gr1LDZM=";
+      fetchWikimediaSkin "MonoBook" "73c5041e5e54830d02571fc01603e7887503c4ef"
+        "sha256-+qD7RksLcO9+/e3cdfytRfJHgWjUVl4rxxo3n/UoxaE=";
     Timeless =
-      fetchWikimediaSkin "Timeless" "8b03a05cb01e3ae9fc7e71fdb1ce879c0de00557"
-        "sha256-/bpzwEdovd8Lh+JTIBrr+e0vWihc2dtyjNKdVkYCeaM=";
+      fetchWikimediaSkin "Timeless" "0facc323c9c1c0233fff22006f1a4d8758517e77"
+        "sha256-c6pcP/CYqD/tjwKpra28hJR/JW6A6sqe6LSwbVe4Jsw=";
     Vector =
-      fetchWikimediaSkin "Vector" "2ef12c5db2f4e224fc93ed5ec833cf3a342f8b79"
-        "sha256-hlZNbeDcFlAfhPO1T/A/1EcgIr//S7t7+BsU4GqsrAo=";
+      fetchWikimediaSkin "Vector" "a0465246fe2cccc4787d580f75b37c59462e69b5"
+        "sha256-bnsnmM9afaJD3h8nyXxe0XuX0Sz9puret/igvTj1HoA=";
   };
 }
