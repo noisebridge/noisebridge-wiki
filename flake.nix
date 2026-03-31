@@ -185,7 +185,7 @@
 
       deploy.nodes = {
         main-wiki = {
-          hostname = primaryMeta.publicIpv4;
+          hostname = primaryMeta.publicDomain;
           remoteBuild = false;
           sshUser = siteConfig.deploySshUser;
           profiles.system = {
@@ -195,7 +195,7 @@
         };
 
         replica-wiki = {
-          hostname = replicaMeta.publicIpv4;
+          hostname = replicaMeta.publicDomain;
           remoteBuild = false;
           sshUser = siteConfig.deploySshUser;
           profiles.system = {
