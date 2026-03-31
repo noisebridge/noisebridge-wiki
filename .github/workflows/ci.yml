@@ -15,7 +15,8 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
-  check:
+  pr-check:
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -30,9 +31,8 @@ jobs:
       - name: Run repository checks
         run: nix run .#check
 
-  deploy:
-    needs: check
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+  main-deploy:
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-latest
     concurrency:
       group: deploy
@@ -46,6 +46,9 @@ jobs:
         with:
           use-flakehub: false
           use-gha-cache: true
+
+      - name: Run repository checks
+        run: nix run .#check
 
       - name: Configure SSH
         run: |

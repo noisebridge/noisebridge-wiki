@@ -229,9 +229,6 @@
               exit 1
             fi
 
-            nix build .#checks.${system}.deploy-activate
-            nix build .#checks.${system}.deploy-schema
-
             main_path=$(nix build '.#deploy.nodes.main-wiki.profiles.system.path' --print-out-paths)
             ${pkgs.nix}/bin/nix store sign --recursive --key-file "$deploy_signing_key" "$main_path"
 
