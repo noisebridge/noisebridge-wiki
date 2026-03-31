@@ -33,59 +33,59 @@ in
 {
   extensions = {
     AdminLinks =
-      fetchWikimediaExtension "AdminLinks" "45eb65a5c439dd8dbf5656eccb277f0cefe9a12a"
-        "sha256-CBIxASBVcdQgL6Iw6OtIxWRi0tfdojajNqY3U4w3b+o=";
+      fetchWikimediaExtension "AdminLinks" "b60e6ac6a9fe54d0bc25719454489aef393d5133"
+        "sha256-2uIMdbECmBr6opibZyOwR53ztm7t4ZKY5ZLG7xFwnHc=";
     BetaFeatures =
-      fetchWikimediaExtension "BetaFeatures" "635be7f11808085a38071dcaf82f0becfd018826"
-        "sha256-N/xiTlrzOb8mtt7mgtQ9iwrLJu8ddt8JwN+99EGfwXI=";
+      fetchWikimediaExtension "BetaFeatures" "2d326bea48f8841820ad1f2af216822628ffa768"
+        "sha256-4FrFvq9LiJH7yUxc3FoyoV1EttSX1J9akG7i2J957TI=";
     CategoryTree =
-      fetchWikimediaExtension "CategoryTree" "f1b16bb3f187ce6cf5bbd36e22bbf592f2ba3c50"
-        "sha256-y4zCt0vNrbN2nNvDvXjHFQ6BH/P2nSTHKCwY1bWil2A=";
+      fetchWikimediaExtension "CategoryTree" "c7c36d4922945f9a9560db32ad8b39c10ad8b8b2"
+        "sha256-nl8FiakSZT2apWtWhdG88qc583oSWhfMtp+axT7ks4M=";
     CharInsert =
-      fetchWikimediaExtension "CharInsert" "ac7eb1b0f965cde72ae9b15f0ad9e531b6518f6c"
-        "sha256-KlSh5ZYnF4IqGClA/1Oj2PAoUM4PAFh0U1yUHSPS18Y=";
+      fetchWikimediaExtension "CharInsert" "113583ba92ca68495697f8f68544b2c93211188b"
+        "sha256-CvFo1FtRRCyY8OdcRj1f69y1Iy70HjpxPU5egLkdrzY=";
     CheckUser =
-      fetchWikimediaExtension "CheckUser" "5148f833325ac9dec693580239ab315915d92d99"
-        "sha256-b/3TZdRIEg7jwWynNHjluRyS0rwdtbY1ahZLALq4tWc=";
+      fetchWikimediaExtension "CheckUser" "11fbd4a0e78c32dbe83307b9a23bc3215c17c667"
+        "sha256-qxsDviTMNEDJyAwFMoD0tOWtrTHJD1pM+8FKi/6uwvM=";
     Cite =
-      fetchWikimediaExtension "Cite" "deb4de4502b807fa59b2b82714783d5c3420be31"
-        "sha256-/5CxElCZkCL2ex7w3I4MoNa8GnnhLxKY7js6gYS3rrs=";
+      fetchWikimediaExtension "Cite" "b27b45b577d10f005091995fd66e933f52ee9f27"
+        "sha256-A6SlDhyJyiTfRiEPluN8pWFL0VXBuOwgvm2nZa3kB5I=";
     CodeEditor =
-      fetchWikimediaExtension "CodeEditor" "d78cdd11617bbe476bbad2e5379e17b583a25f54"
-        "sha256-rvNb7mpUPzJCeLqLsIi3qqXj5+sX9UxHmbgdEm9yhaw=";
+      fetchWikimediaExtension "CodeEditor" "b8c861a9a4124bcd4963564c42290bddde39f27c"
+        "sha256-324pt4mTpWHeHu0WxPlwNx9cF+tv1S2zVclGdubx61Q=";
     ConfirmAccount =
-      fetchWikimediaExtension "ConfirmAccount" "0c0f17c483108f3c14da620d70d4498bb889f22c"
-        "sha256-8sXziggkquQdvXuUD/asbhVQglLiFzuYCVe9FePR9NY=";
+      fetchWikimediaExtension "ConfirmAccount" "15e760d82b4db84f52e2afd2193098aff5155fda"
+        "sha256-25JAfJXgqUzslw3JJf5Z3d+bkI9X4aOGrsPHmJdm7ew=";
     ConfirmEdit =
-      fetchWikimediaExtension "ConfirmEdit" "1761d61ce02c6854ee49495d45fb5c70e897feb8"
-        "sha256-GQb5qe/T0gmFZJ55dKQKYZUoKlk+Iak8pr8kDOpUeHk=";
+      fetchWikimediaExtension "ConfirmEdit" "0b3c343085abba38c0ace5ea9416c5ef035729ff"
+        "sha256-Q5I1ERTgyvqSa9VlT0twtRpPB02C2H4VUuGUlnc1V6c=";
     Echo =
-      fetchWikimediaExtension "Echo" "84b05e44058baa0096cc9040d6abefa8cdf5551c"
-        "sha256-10FnVUq7J4POlj8r3WvAE5ZG7+t5S79GSGIs3tQi1OU=";
+      fetchWikimediaExtension "Echo" "8edd3eed8bdafff440d32b71d90145d878763bf5"
+        "sha256-QE4FbJCmm8/xiH/nUR76slxw+uD9oK1XwhPSXwx1PQQ=";
     Gadgets =
-      fetchWikimediaExtension "Gadgets" "888443ff0ea365b7ef7cea51f872b473cbb55bd7"
-        "sha256-vg3xVdgMPg7YqoFTsqHfvUYdy9rNFpBvv/CVKTdeIF4=";
+      fetchWikimediaExtension "Gadgets" "e42e4505af1f90bc8793e9c91fe190767088b95a"
+        "sha256-MSjvhR3t2YbZCGuUAf49MI45J/x4d4gHI7uxUQJJztE=";
     Graph =
       fetchGitilesGit "mediawiki/extensions/Graph" "bd416299450c4cdd608563ad2faebb43cde9a3db"
         "sha256-VgOA0VROh/Vtnb54+BgApVpsckcCalN6wh+Fc69zQII=";
     ImageMap =
-      fetchWikimediaExtension "ImageMap" "3deaecb20f7ca9c7df79ebce285e4d87bd6b4e67"
-        "sha256-sId/eXP4r2eJvUVuGsglMyYm6vFjzwqSOml6u6ujIcU=";
+      fetchWikimediaExtension "ImageMap" "2759c8865e7ee8007c9174ed0c0640d0f9e12109"
+        "sha256-k11rlLzbMWU1W0d7NtudWe0VlILxsByqEsqKb+n1hsE=";
     InputBox =
-      fetchWikimediaExtension "InputBox" "8f8bbfca01a554bfe2493161711b0f03702fdb88"
-        "sha256-VVp03d6Q7q+gAYemOjj9EYHH3QUfco3VoqSHwLYSp48=";
+      fetchWikimediaExtension "InputBox" "063fcbb736d32f62b50a6ff14d8d76c90f4c3ff2"
+        "sha256-2Gbwf4P3IWeNFZ8Dp+Zkbs1BiI7xcv6huw8vGrfYENU=";
     Interwiki =
-      fetchWikimediaExtension "Interwiki" "6e079c7619426d063ae51cf1f866197ad1eb5d1a"
-        "sha256-Wk2DvBGigv2LIzOafUiIE5Cc62W+enIG3yVVczRKZyw=";
+      fetchWikimediaExtension "Interwiki" "04b8c6c116f35f4cf6bf2c39ebf7930c75057b3b"
+        "sha256-qWwXLsuPAJJQ639YD0WRbeb3yGghOgNjR5PIinpuAYk=";
     InviteSignup =
-      fetchWikimediaExtension "InviteSignup" "2e39d0b766d3c6d82ccf9a530f2f2fea93c2bede"
-        "sha256-Q4Pe1kr3aWEK7XpDaD4Mq6t5Rs4/oYUgEc2bOZGMWf0=";
+      fetchWikimediaExtension "InviteSignup" "de58cc6acd6a37b5dd75d1ff0eed455014177978"
+        "sha256-seS8OTvgvVWUeMufWb10ry0YTncEBP2yLlhl72YNk3Q=";
     JsonConfig =
-      fetchWikimediaExtension "JsonConfig" "d6216d7eff1ae7a546e81b086625ce5674244ed0"
-        "sha256-uDdO3mwRiGrwNX7Kh7IpAV1SPIxzs7wHyugXh7yJwm0=";
+      fetchWikimediaExtension "JsonConfig" "11138226c0e5afa5662ef9380c6230058ed89f97"
+        "sha256-tRhM+J2s43IbaSeMA4aErzqF9cLbHX4vDDJyFu72kuM=";
     MultimediaViewer =
-      fetchWikimediaExtension "MultimediaViewer" "bedf4c47d7796b1f5475194cd96cf5fd4e3a73c3"
-        "sha256-KtO+D0DFiZFuLEn5uMbQjOtfQlyf9MzkNiy3cHEk1T4=";
+      fetchWikimediaExtension "MultimediaViewer" "f98c21bbfb6c22ef67cac85050d08b111687f458"
+        "sha256-eIO34N63EPC5syy42kf4E3RiyaEOlRDNv6aB8ZfXVOU=";
     mwGoogleSheet =
       fetchGitHubArchive "marcidy/mwGoogleSheet" "c1d447be069cfad830bd493bd0e15b1be528d2de"
         "sha256-B0URmW+MAxwXn6pIr4CnQBl+vLqt+81M1lGfMHx7TKs=";
@@ -100,41 +100,41 @@ in
         cp -R "$src/extension/NBWTF/." "$out/"
       '';
     Nuke =
-      fetchWikimediaExtension "Nuke" "5d5467046647117fb7fda5890afd54d550842426"
-        "sha256-3kHM+2DuItAotagnI0Suhv5vP9fnrmvCYJutxv/QRYY=";
+      fetchWikimediaExtension "Nuke" "b5a55e04819ccd45799b87f2158d5c2f6b716cf3"
+        "sha256-LVznYjS2mWmxlhzvhzFSOqkeyxh4ra04howHvHcekhY=";
     OATHAuth =
-      fetchWikimediaExtension "OATHAuth" "70b5eddad19431a8cda3c33291d80d937614e2a0"
-        "sha256-sUdxH9sZjZbZ9xWcItLuvq4vwyu/DdrLvjUBsDiq6Ng=";
+      fetchWikimediaExtension "OATHAuth" "a4d7596bef249fdf47138b08402cd239bae6d8a4"
+        "sha256-rZPARmUFRuSf1D6ukDv769xY0InumBULlk2eLAfD3/s=";
     PageImages =
-      fetchWikimediaExtension "PageImages" "1c5af7d601ba8da3b6fe63e8d6e355a8a807ca44"
-        "sha256-4vVEt3WhPJAxGcqYKViqWt/ls2YKY9lRtsuVyg59SY4=";
+      fetchWikimediaExtension "PageImages" "e8619e4b6c12749b523c12268ca3978ad108ef35"
+        "sha256-O268wK2Vxyzig3wEX0sNe0C8eK7/yETHqe7YV7a0+Uw=";
     ParserFunctions =
-      fetchWikimediaExtension "ParserFunctions" "afca9e971d37af840beb0d18b3cd1bb288cff2da"
-        "sha256-OZrCR9EWyUHzIwwOBabO4jlw3M/B9IKHeDD0gy5CHF0=";
+      fetchWikimediaExtension "ParserFunctions" "830f7dce85d4f57018af0c62fdea9d6b25cb33a1"
+        "sha256-5TNy9zkgurAkGNFypmJpaILuNtgC09tAP35a0tudwNA=";
     Popups =
-      fetchWikimediaExtension "Popups" "077e5d5d736350c317eb0e89d74cb865bec94be5"
-        "sha256-2pTf+tlaMv3zc0st8yYMPNRr2lQKO/ZgQCwQeWX4/cY=";
+      fetchWikimediaExtension "Popups" "95f341e41eac6ca049bf242c0b8ba0ec3d7eb37e"
+        "sha256-rsWvigdB0xcWLmUEnAI2dDV0aFISq8IKfxwwR4Bm3aM=";
     Renameuser =
-      fetchWikimediaExtension "Renameuser" "b0a8544cb1ff45f01190f222d4b2d7c99959fe7f"
-        "sha256-39VsqhSuKfOnL/6hwfeFyHsxSJr/VTnJE5BlfCP+2MA=";
+      fetchWikimediaExtension "Renameuser" "877b8ee5a65bf19924bd2d3e96140d6b69f5fcdd"
+        "sha256-sxwJj7H//wwQCvCUepRPtGtpKWnSSzieaKyFtOgDqAI=";
     Scribunto =
-      fetchWikimediaExtension "Scribunto" "a88e0fd4c54a65e9542bba3287b64605174371e0"
-        "sha256-pHS8nTMLb9lMqsvFU7sgWRvMOviW0NU80C26vl5VC7A=";
+      fetchWikimediaExtension "Scribunto" "325e44b03395705ea8d1de6b32f9f7be6f12d717"
+        "sha256-jHHabuB1mdyav+8JjgJSInuenNfvF+3EWpb5gP5IHjk=";
     TemplateData =
-      fetchWikimediaExtension "TemplateData" "15a04ff238648051415d08de0b0eddb41f440762"
-        "sha256-eZmD/YViugtgMaCZ+bqyqM6esqIRLwLN2WIflv2E8NM=";
+      fetchWikimediaExtension "TemplateData" "2c6c7c1cd735dcc3a53c35dda83c91d4dfc62836"
+        "sha256-PR5mzfvzeOGmhYxxJsoewZjdVY4PMm8wZU4VBiVL6os=";
     TextExtracts =
-      fetchWikimediaExtension "TextExtracts" "8fc857df757cd105bc79e36f0a4e8ad53ae92921"
-        "sha256-L3naN3jkvX4XjunvkKTCoz+CAgLFVzOALZhtaCtGfRE=";
+      fetchWikimediaExtension "TextExtracts" "f6f1593834e4a37657238e45938771440e6334d3"
+        "sha256-enFr0fBPCUKhK5aXEU+kjxE36xo/1b9Oxvm+U/m6YL0=";
     Thanks =
-      fetchWikimediaExtension "Thanks" "2e494787e401eea347f686ccf5ff5576b7671596"
-        "sha256-ZvSf8VvdOmvN+3Fol0BLB52m5yRUfMGRzfsBBpgQLA0=";
+      fetchWikimediaExtension "Thanks" "e693b7bdb15d909207336c6380df2050c778bab2"
+        "sha256-+chI7i2702bv06iVc04/rEt2RPNLPHYvOTNZuJ/08Qw=";
     VisualEditor =
-      fetchWikimediaExtension "VisualEditor" "8d1a70cf06946e0000ab2b6904b80f2c97bd1f16"
-        "sha256-i/6Psyqxd5bQYpXEeQMlS9/pvUeidErOaaVK+fAsjpw=";
+      fetchWikimediaExtension "VisualEditor" "668ed3ab2851ddf758d3a878f98d61aba33707fa"
+        "sha256-CLRBDiyTgGLeYAeMBeiE8WPTmAtwzFHi5K1a7AJoTpQ=";
     WikiEditor =
-      fetchWikimediaExtension "WikiEditor" "b191677753cd7639c91b8ae078e8a985eea6c53f"
-        "sha256-KWsFRwgDb63kvL5rCgPzsoEYaq4jGfJbnGXxjNTEt7I=";
+      fetchWikimediaExtension "WikiEditor" "cdda07652cf836f717ec60d889f161ce3cfacdee"
+        "sha256-Rl5cEpL45Q4RCgg7kvGX9zQRha5fuPvWtIyj4DIxEHw=";
     QRLite =
       fetchGitHubZipArchive "gesinn-it/QRLite" "caab2f6054d5269a415b135ee66751c2fe429149"
         "sha256-2lDe2gkHVZcUc7O15xqLn8C3NHlNA3ABtZtXnosK8G8=";
