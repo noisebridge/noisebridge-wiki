@@ -219,6 +219,8 @@ in
       $wgSessionsInObjectCache = true;
       $wgSessionCacheType = CACHE_MEMCACHED;
 
+      wfLoadExtension( 'ConfirmEdit/ReCaptchaNoCaptcha' );
+
       $wgEnableUploads = true;
       $wgUploadDirectory = "${siteConfig.mediawiki.uploadsDir}";
       $wgUploadPath = "${siteConfig.mediawiki.uploadPath}";
