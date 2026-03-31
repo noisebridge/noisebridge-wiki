@@ -325,6 +325,7 @@ in
         'descriptionCacheExpiry' => 43200,
         'apiThumbCacheExpiry' => 86400,
       ];
+      $wgShowExceptionDetails = true; 
     '';
   };
 
