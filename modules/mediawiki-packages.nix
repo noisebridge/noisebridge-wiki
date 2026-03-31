@@ -130,8 +130,8 @@ in
       fetchWikimediaExtension "Thanks" "e693b7bdb15d909207336c6380df2050c778bab2"
         "sha256-+chI7i2702bv06iVc04/rEt2RPNLPHYvOTNZuJ/08Qw=";
     VisualEditor =
-      fetchWikimediaExtension "VisualEditor" "668ed3ab2851ddf758d3a878f98d61aba33707fa"
-        "sha256-CLRBDiyTgGLeYAeMBeiE8WPTmAtwzFHi5K1a7AJoTpQ=";
+      fetchGitilesGit "mediawiki/extensions/VisualEditor" "668ed3ab2851ddf758d3a878f98d61aba33707fa"
+        "sha256-LL0imt8zL95UdJor5wQXiPqvS7YsTKJgLQ5/SCFLb/g=";
     WikiEditor =
       fetchWikimediaExtension "WikiEditor" "cdda07652cf836f717ec60d889f161ce3cfacdee"
         "sha256-Rl5cEpL45Q4RCgg7kvGX9zQRha5fuPvWtIyj4DIxEHw=";
