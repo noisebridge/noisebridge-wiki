@@ -134,14 +134,30 @@ in
     script = ''
       password="$(tr -d '\n' < ${mediawikiReplicationPassword})"
       status="$(${pkgs.mariadb}/bin/mariadb --protocol=socket -uroot -e "SHOW SLAVE STATUS\\G" || true)"
+      desired_host='${siteConfig.hosts.primary.publicIpv4}'
 
       if printf '%s\n' "$status" | grep -q "Master_Host: ${siteConfig.hosts.primary.publicIpv4}"; then
         ${pkgs.mariadb}/bin/mariadb --protocol=socket -uroot -e "START SLAVE;"
         exit 0
       fi
 
+      if [ -n "$status" ]; then
+        master_log_file="$(printf '%s\n' "$status" | ${pkgs.gnugrep}/bin/grep 'Relay_Master_Log_File:' | head -n1 | cut -d: -f2- | xargs)"
+        master_log_pos="$(printf '%s\n' "$status" | ${pkgs.gnugrep}/bin/grep 'Exec_Master_Log_Pos:' | head -n1 | cut -d: -f2- | xargs)"
+
+        if [ -z "$master_log_file" ] || [ -z "$master_log_pos" ] || [ "$master_log_pos" = "0" ]; then
+          master_log_file="$(printf '%s\n' "$status" | ${pkgs.gnugrep}/bin/grep 'Master_Log_File:' | head -n1 | cut -d: -f2- | xargs)"
+          master_log_pos="$(printf '%s\n' "$status" | ${pkgs.gnugrep}/bin/grep 'Read_Master_Log_Pos:' | head -n1 | cut -d: -f2- | xargs)"
+        fi
+
+        if [ -n "$master_log_file" ] && [ -n "$master_log_pos" ] && [ "$master_log_pos" != "0" ]; then
+          ${pkgs.mariadb}/bin/mariadb --protocol=socket -uroot -e "STOP SLAVE; CHANGE MASTER TO MASTER_HOST='${siteConfig.hosts.primary.publicIpv4}', MASTER_USER='${siteConfig.database.replicationUser}', MASTER_PASSWORD='${"$"}password', MASTER_PORT=3306, MASTER_LOG_FILE='${"$"}master_log_file', MASTER_LOG_POS=${"$"}master_log_pos, MASTER_CONNECT_RETRY=10; START SLAVE;"
+          exit 0
+        fi
+      fi
+
       while :; do
-        master_status="$(${pkgs.mariadb}/bin/mariadb --batch --skip-column-names -h ${siteConfig.hosts.primary.publicIpv4} -u ${siteConfig.database.replicationUser} --password="$password" -e "SHOW MASTER STATUS" 2>/dev/null || true)"
+        master_status="$(${pkgs.mariadb}/bin/mariadb --batch --skip-column-names -h "$desired_host" -u ${siteConfig.database.replicationUser} --password="$password" -e "SHOW MASTER STATUS" 2>/dev/null || true)"
         if [ -n "$master_status" ]; then
           break
         fi
@@ -152,12 +168,7 @@ in
       master_log_file="$1"
       master_log_pos="$2"
 
-      ${pkgs.mariadb}/bin/mariadb --protocol=socket -uroot <<SQL
-      STOP SLAVE;
-      RESET SLAVE ALL;
-      CHANGE MASTER TO MASTER_HOST='${siteConfig.hosts.primary.publicIpv4}', MASTER_USER='${siteConfig.database.replicationUser}', MASTER_PASSWORD='${"$"}password', MASTER_PORT=3306, MASTER_LOG_FILE='${"$"}master_log_file', MASTER_LOG_POS=${"$"}master_log_pos, MASTER_CONNECT_RETRY=10;
-      START SLAVE;
-      SQL
+      ${pkgs.mariadb}/bin/mariadb --protocol=socket -uroot -e "STOP SLAVE; RESET SLAVE ALL; CHANGE MASTER TO MASTER_HOST='${siteConfig.hosts.primary.publicIpv4}', MASTER_USER='${siteConfig.database.replicationUser}', MASTER_PASSWORD='${"$"}password', MASTER_PORT=3306, MASTER_LOG_FILE='${"$"}master_log_file', MASTER_LOG_POS=${"$"}master_log_pos, MASTER_CONNECT_RETRY=10; START SLAVE;"
     '';
   };
 
