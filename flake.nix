@@ -130,13 +130,6 @@
             privateKeepDays = 14;
             publicKeepDays = 7;
             onCalendar = "02:00";
-            sync = {
-              enable = false;
-              onCalendar = "03:00";
-              rcloneConfigFile = null;
-              remotes = [ ];
-              pathPrefix = "wiki-dumps";
-            };
           };
         };
 
