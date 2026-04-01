@@ -39,7 +39,7 @@
 
       siteConfig = rec {
         wikiName = "Noisebridge";
-        baseDomain = "extremist.software";
+        baseDomain = "wiki.extremist.software";
         sshUser = "jet";
         deploySshUser = "github-actions";
         adminUsers = {
@@ -58,8 +58,8 @@
         replicaHostName = "replica-wiki";
 
         domains = {
-          primary = "${primaryHostName}.${baseDomain}";
-          replica = "${replicaHostName}.${baseDomain}";
+          primary = baseDomain;
+          replica = "replica.${baseDomain}";
         };
 
         deploySigningPublicKey = "noisebridge-wiki-deploy-1:j9CAnUOOkOxOdAhkNKqGQ7RtUaZeJA0tOHXqofruuWI=";

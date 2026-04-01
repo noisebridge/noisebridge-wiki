@@ -8,8 +8,8 @@ fi
 
 dump_dir="$1"
 mode="${2:-all}"
-main_ssh_host="${MAIN_SSH_HOST:-jet@main-wiki.extremist.software}"
-replica_ssh_host="${REPLICA_SSH_HOST:-jet@replica-wiki.extremist.software}"
+main_ssh_host="${MAIN_SSH_HOST:-jet@wiki.extremist.software}"
+replica_ssh_host="${REPLICA_SSH_HOST:-jet@replica.wiki.extremist.software}"
 remote_mediawiki_dir="${REMOTE_MEDIAWIKI_DIR:-/srv/mediawiki}"
 rsync_base=(rsync -aH --info=progress2 --rsync-path="sudo rsync")
 

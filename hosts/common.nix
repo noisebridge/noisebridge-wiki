@@ -5,7 +5,6 @@
   ];
 
   networking.hostName = hostMeta.nixosName;
-  networking.domain = siteConfig.baseDomain;
 
   system.stateVersion = "24.11";
 }

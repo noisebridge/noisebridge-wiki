@@ -4,8 +4,12 @@ This repo manages the Noisebridge wiki infrastructure.
 
 It currently deploys a two-host MediaWiki setup:
 
-- [`main-wiki.extremist.software`](https://main-wiki.extremist.software/): primary wiki, writable MediaWiki, MariaDB primary, Caddy, PHP-FPM
-- [`replica-wiki.extremist.software`](https://replica-wiki.extremist.software): read-only wiki, MariaDB replica, Caddy, PHP-FPM
+- `main-wiki.extremist.software`: primary wiki, writable MediaWiki, MariaDB primary, Caddy, PHP-FPM
+- `replica-wiki.extremist.software`: read-only wiki, MariaDB replica, Caddy, PHP-FPM
+- `wiki.extremist.software`: primary wiki, writable MediaWiki, MariaDB primary, Caddy, PHP-FPM
+- `replica.wiki.extremist.software`: read-only wiki, MariaDB replica, Caddy, PHP-FPM
+
+Set `siteConfig.baseDomain` in `flake.nix` to move the whole public wiki hostname tree.
 
 ## Repo Layout
 
