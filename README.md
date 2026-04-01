@@ -100,7 +100,6 @@ examplePerson = {
 - Local static assets live at `/srv/mediawiki/img`.
 - Nightly dumps run at `02:00` local time on `replica-wiki`: a private full-history dump with uploads/files for backup and a public current-only dump for bots.
 - Public dumps are served from `dumps.extremist.software` out of `/var/www/dumps.extremist.software`.
-- Private dump fanout is designed around `rclone`, so one encrypted config can push the same dump to multiple remotes (B2, S3, SFTP, etc.).
 
 ## Migration Scripts
 
