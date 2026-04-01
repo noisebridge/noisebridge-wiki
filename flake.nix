@@ -62,6 +62,7 @@
         domains = {
           primary = baseDomain;
           replica = "replica.${baseDomain}";
+          dumps = "dumps.${baseDomain}";
         };
 
         deploySigningPublicKey = "noisebridge-wiki-deploy-1:j9CAnUOOkOxOdAhkNKqGQ7RtUaZeJA0tOHXqofruuWI=";
@@ -122,6 +123,21 @@
             "TemplateData"
             "WikiEditor"
           ];
+          dumps = {
+            publicDomain = siteConfig.domains.dumps;
+            publicDir = "/var/www/${siteConfig.domains.dumps}";
+            privateDir = "/var/backups/wiki";
+            privateKeepDays = 14;
+            publicKeepDays = 7;
+            onCalendar = "02:00";
+            sync = {
+              enable = false;
+              onCalendar = "03:00";
+              rcloneConfigFile = null;
+              remotes = [ ];
+              pathPrefix = "wiki-dumps";
+            };
+          };
         };
 
         database = {
@@ -172,6 +188,7 @@
             ./modules/common.nix
             ./modules/admin-users.nix
             ./modules/deploy-ssh.nix
+            ./modules/wiki-dumps.nix
           ];
         };
 
