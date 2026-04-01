@@ -57,10 +57,19 @@ nix run .#bootstrap-host -- --admin <name> <main-target-host> <replica-target-ho
 ## Deployment Notes
 
 - The deploy app requires an explicit SSH user.
-- `jet` is the normal admin deploy user from a laptop.
 - `github-actions` is the CI deploy user.
 - Deploys are done with `deploy-rs`.
 - `nix run .#check` is the pre-deploy validation entrypoint.
+
+Add an admin by creating another entry in `siteConfig.adminUsers` in `flake.nix`:
+
+```nix
+examplePerson = {
+  openssh.authorizedKeys.keys = [
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFakeKeyForExampleOnlyDontUseThis"
+  ];
+};
+```
 
 ## MediaWiki Notes
 
@@ -85,6 +94,23 @@ Useful scripts in `scripts/`:
 - encrypted secret definitions live under `secrets/`
 - host recipients live under `secrets/hosts/`
 - hosts decrypt using their local age identity
+
+To add a new person for secret decryption:
+
+1. add their age public key to `adminKeys` in `secrets/secrets.nix`
+2. enter the dev shell with `nix develop` so `agenix` is available (or install agenix any other way)
+3. run `agenix -r` from the repo root to rekey all secrets using `./secrets.nix`
+
+Example `adminKeys` entry:
+
+```nix
+adminKeys = [
+  # Example Person
+  "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFakeKeyForExampleOnlyDontUseThis"
+];
+```
+
+Changing `secrets/secrets.nix` updates the intended recipient list, but the new person cannot actually decrypt anything until `agenix -r` has re-encrypted the existing `.age` files.
 
 ## Workflow
 
