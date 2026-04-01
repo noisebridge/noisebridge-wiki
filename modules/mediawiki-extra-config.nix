@@ -32,6 +32,7 @@
     $wgMainCacheType = CACHE_MEMCACHED;
     $wgMessageCacheType = CACHE_MEMCACHED;
     $wgParserCacheType = CACHE_MEMCACHED;
+    $wgRevisionCacheExpiry = 0;
     $wgMemCachedServers = [ "127.0.0.1:11211" ];
     $wgEnableSidebarCache = true;
     $wgSessionsInObjectCache = true;
