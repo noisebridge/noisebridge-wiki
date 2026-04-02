@@ -1,40 +1,40 @@
 # Noisebridge Wiki
 
-This repo manages the Noisebridge wiki infrastructure.
+This repository manages the Nix-based infrastructure for the Noisebridge MediaWiki deployment.
 
-It currently deploys a two-host MediaWiki setup:
+## Overview
 
-- `main-wiki.extremist.software`: primary wiki, writable MediaWiki, MariaDB primary, Caddy, PHP-FPM
-- `replica-wiki.extremist.software`: read-only wiki, MariaDB replica, Caddy, PHP-FPM
-- `wiki.extremist.software`: primary wiki, writable MediaWiki, MariaDB primary, Caddy, PHP-FPM
-- `replica.wiki.extremist.software`: read-only wiki, MariaDB replica, Caddy, PHP-FPM
+The flake currently deploys a two-host setup:
 
-Set `siteConfig.baseDomain` in `flake.nix` to move the whole public wiki hostname tree.
+- [`wiki.extremist.software`](https://wiki.extremist.software): primary wiki, writable MediaWiki, MariaDB primary, Caddy, PHP-FPM
+- [`replica.wiki.extremist.software`](https://replica.wiki.extremist.software): read-only wiki, MariaDB replica, Caddy, PHP-FPM
 
-## Repo Layout
+Change `siteConfig.baseDomain` in `flake.nix` to move the public wiki hostnames together.
 
-- `flake.nix`: top-level Nix flake, deploy definitions, checks, app entrypoints
+## Repository Layout
+
+- `flake.nix`: top-level flake, deploy definitions, checks, and app entrypoints
 - `hosts/main-wiki.nix`: primary host configuration
 - `hosts/replica-wiki.nix`: replica host configuration
 - `modules/mediawiki-packages.nix`: pinned MediaWiki extensions and skins
-- `scripts/`: migration and maintenance helpers
+- `scripts/`: migration, export/import, and bootstrap helpers
 - `secrets/`: agenix-encrypted secrets and host recipients
 
 ## Common Commands
 
-Check the repo:
+Validate the repo and build both host configurations:
 
 ```sh
 nix run .#check
 ```
 
-Deploy both hosts:
+Deploy both hosts as a specific SSH user:
 
 ```sh
 nix run .#deploy -- jet
 ```
 
-Deploy one host:
+Deploy a single host:
 
 ```sh
 nix run .#deploy -- jet .#main-wiki
@@ -47,7 +47,7 @@ CI deploys with:
 nix run .#deploy -- github-actions
 ```
 
-Bootstrap a fresh Ubuntu host into NixOS:
+Bootstrap fresh Ubuntu hosts into NixOS:
 
 ```sh
 nix run .#bootstrap-host -- --admin <name> <main-wiki|replica-wiki> <target-host> [ssh-identity-file]
@@ -56,10 +56,12 @@ nix run .#bootstrap-host -- --admin <name> <main-target-host> <replica-target-ho
 
 ## Deployment Notes
 
-- The deploy app requires an explicit SSH user.
+- The deploy app always requires an explicit SSH user.
+- `jet` is the normal interactive admin deploy user.
 - `github-actions` is the CI deploy user.
-- Deploys are done with `deploy-rs`.
-- `nix run .#check` is the pre-deploy validation entrypoint.
+- Deploys use `deploy-rs`.
+- `nix run .#check` is the intended pre-deploy validation step.
+- Deploys require a local signing key at `$LOCAL_KEY`, `$NOISEBRIDGE_DEPLOY_SIGNING_KEY`, or `$HOME/.config/noisebridge-wiki/deploy-signing-key`.
 - Admin SSH users live in `siteConfig.adminUsers` in `flake.nix`.
 - Each admin user can set `sshKeys = [ ... ]`, `githubUsers = [ ... ]`, or both.
 - Every GitHub username in `githubUsers` contributes all keys from `https://github.com/<user>.keys` during activation.
@@ -82,39 +84,33 @@ adminUsers = {
 };
 ```
 
-Add an admin by creating another entry in `siteConfig.adminUsers` in `flake.nix`:
-
-```nix
-examplePerson = {
-  openssh.authorizedKeys.keys = [
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFakeKeyForExampleOnlyDontUseThis"
-  ];
-};
-```
-
 ## MediaWiki Notes
 
 - MediaWiki core is pinned to `1.39.13`.
 - Wikimedia extensions and skins are pinned in `modules/mediawiki-packages.nix`.
-- Uploads live at `/srv/mediawiki/images`.
+- Uploaded files live at `/srv/mediawiki/images`.
 - Local static assets live at `/srv/mediawiki/img`.
 
 ## Migration Scripts
 
-Useful scripts in `scripts/`:
+Useful helpers in `scripts/`:
 
 - `scripts/migrate-all.sh`: full content migration flow
-- `scripts/import-db-to-main.sh`: import DB into primary and reseed replica
+- `scripts/import-db-to-main.sh`: import the database into primary and reseed replica
 - `scripts/import-files-to-main.sh`: copy files into primary
-- `scripts/export-prod-db.sh`: export DB from the current production source
-- `scripts/export-prod-files.sh`: export files from the current production source
+- `scripts/export-prod-db.sh`: export the current production database
+- `scripts/export-prod-files.sh`: export the current production files
+- `scripts/export-and-import-db.sh`: export and import the database in one step
+- `scripts/export-and-import-files.sh`: export and import files in one step
+- `scripts/bootstrap-host.sh`: bootstrap one or both hosts from Ubuntu to NixOS
 
 ## Secrets
 
-- agenix manages runtime secrets
-- encrypted secret definitions live under `secrets/`
-- host recipients live under `secrets/hosts/`
-- hosts decrypt using their local age identity
+- `agenix` manages runtime secrets.
+- Encrypted secret definitions live under `secrets/shared/`.
+- Host age recipients live under `secrets/hosts/`.
+- Recipient wiring lives in `secrets/secrets.nix`.
+- Hosts decrypt secrets using their local age identity.
 
 To add a new person for secret decryption:
 
@@ -135,11 +131,11 @@ Changing `secrets/secrets.nix` updates the intended recipient list, but the new 
 
 ## Workflow
 
-Typical admin workflow:
+Typical admin flow:
 
-1. edit Nix config
-2. run `nix run .#check`
-3. deploy with `nix run .#deploy -- <user>`
-4. verify both wiki hosts
+1. Edit the Nix configuration.
+2. Run `nix run .#check`.
+3. Deploy with `nix run .#deploy -- <user>`.
+4. Verify the primary and replica hosts.
 
 When making repo changes, use `jj` for commits.
