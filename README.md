@@ -60,6 +60,27 @@ nix run .#bootstrap-host -- --admin <name> <main-target-host> <replica-target-ho
 - `github-actions` is the CI deploy user.
 - Deploys are done with `deploy-rs`.
 - `nix run .#check` is the pre-deploy validation entrypoint.
+- Admin SSH users live in `siteConfig.adminUsers` in `flake.nix`.
+- Each admin user can set `sshKeys = [ ... ]`, `githubUsers = [ ... ]`, or both.
+- Every GitHub username in `githubUsers` contributes all keys from `https://github.com/<user>.keys` during activation.
+- GitHub-backed keys update only when a deploy runs. After deploy, removed GitHub keys stop working and newly added ones start working.
+
+Example:
+
+```nix
+adminUsers = {
+  alice = {
+    sshKeys = [
+      "ssh-ed25519 AAAA... alice@laptop"
+    ];
+    githubUsers = [ "alice" ];
+  };
+
+  bob = {
+    githubUsers = [ "bob" ];
+  };
+};
+```
 
 Add an admin by creating another entry in `siteConfig.adminUsers` in `flake.nix`:
 
