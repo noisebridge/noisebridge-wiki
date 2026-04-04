@@ -52,7 +52,7 @@ in
       userName:
       let
         githubUsers = githubUsersFor siteConfig.adminUsers.${userName};
-        stagedKeyFile = "$" + "{staging_dir}/${userName}.keys";
+        stagedKeyFile = ''"$staging_dir/${userName}.keys"'';
       in
       ''
         tmp_file="$(${pkgs.coreutils}/bin/mktemp)"
@@ -63,8 +63,8 @@ in
         '') githubUsers}
         # Stage the full fetched key set first so a fetch failure cannot delete
         # the currently-authorized GitHub keys for existing admins.
-        ${pkgs.coreutils}/bin/sort -u "$tmp_file" | ${pkgs.gnused}/bin/sed '/^$/d' > ${lib.escapeShellArg stagedKeyFile}
-        ${pkgs.coreutils}/bin/chmod 0644 ${lib.escapeShellArg stagedKeyFile}
+        ${pkgs.coreutils}/bin/sort -u "$tmp_file" | ${pkgs.gnused}/bin/sed '/^$/d' > ${stagedKeyFile}
+        ${pkgs.coreutils}/bin/chmod 0644 ${stagedKeyFile}
         ${pkgs.coreutils}/bin/rm -f "$tmp_file"
       ''
     ) (builtins.attrNames adminUsersWithGithubKeys)
